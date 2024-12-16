@@ -1,3 +1,6 @@
+/**
+ * Класс описывающий товар.
+ */
 package org.topteam1.model;
 
 import java.util.Objects;
@@ -62,6 +65,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + id + " " + name + " " + price + " " + category +"}";
+        return "Product{" + id + ", " + name + ", " + price + ", " + category + "}"; // Метод toString приведем потом к общему формату
     }
 }
