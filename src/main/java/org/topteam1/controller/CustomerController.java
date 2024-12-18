@@ -57,7 +57,7 @@ public class CustomerController {
             case 3 -> customerType = "VIP покупатель";
             default -> customerType = "Неверный тип покупателя";
         }
-        String info = customerService.addCustomer(customerId, customerName, customerType).toString();
+        String info = customerService.addCustomer(customerName, customerType).toString();
         System.out.println(info);
     }
 
