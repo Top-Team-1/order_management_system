@@ -7,18 +7,28 @@ import java.util.List;
 
 public class CustomerRepository {
 
-    private final ArrayList<Customer> customers = new ArrayList<>();
+    private final List<Customer> customers;
+    private Integer countId;
+
+    public CustomerRepository() {
+        this.customers = new ArrayList<>();
+        countId = 0;
+    }
 
     /**
      * Метод для добавления покупателя
      *
-     * @param id           хранит ID покупателя
-     * @param name         хранит имя покупателя
-     * @param customerType хранит тип покупателя
+     * @param customer содержит данные о покупателе
+     * @return возвращает покупателя
      */
-    public void addCustomer(Integer id, String name, String customerType) {
-        Customer customer = new Customer();
-        customers.add(customer);
+    public Customer saveCustomer(Customer customer) {
+
+        customer.setId(++countId);
+
+        if (customers.add(customer)) {
+            return customer;
+        }
+        return null;
     }
 
     /**
@@ -26,7 +36,7 @@ public class CustomerRepository {
      *
      * @return возвращает список всех покупателей
      */
-    public List<Customer> showAllCustomers() {
+    public List<Customer> findCustomer() {
         return customers;
     }
 
