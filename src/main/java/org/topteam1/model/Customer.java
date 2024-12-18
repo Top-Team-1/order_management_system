@@ -14,6 +14,9 @@ public class Customer {
         this.customerType = customerType;
     }
 
+    public Customer() {
+    }
+
     public Integer getId() {
         return id;
     }
@@ -53,10 +56,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", customerType='" + customerType + '\'' +
-                '}';
+        return "ID покупателя: " + id + ". Имя покупателя: " + name + ". Тип покупателя: " + customerType;
     }
 }
