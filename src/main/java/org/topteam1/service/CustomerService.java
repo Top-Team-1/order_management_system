@@ -16,12 +16,12 @@ public class CustomerService {
     /**
      * Метод добавляет нового покупателя в систему
      *
-     * @param id           хранит ID покупателя
+
      * @param name         хранит имя покупателя
      * @param customerType хранит тип покупателя
      * @return возвращает покупателя
      */
-    public Customer addCustomer(Integer id, String name, String customerType) {
+    public Customer addCustomer(String name, String customerType) {
         Customer newCustomer = new Customer(null, name, customerType);
         return customerRepository.saveCustomer(newCustomer);
     }

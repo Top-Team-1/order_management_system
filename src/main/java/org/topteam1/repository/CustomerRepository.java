@@ -46,7 +46,7 @@ public class CustomerRepository {
      * @param customerId принимает в себя ID покупателя
      * @return возвращает покупателя с заданным ID
      */
-    public Customer findCustomerForId(Integer customerId) {
+    public Customer findCustomerForId(int customerId) {
         return customers.stream().filter(c -> c != null && c.getId() == customerId).findFirst().orElse(null);
     }
 }
