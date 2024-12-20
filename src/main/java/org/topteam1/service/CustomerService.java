@@ -16,7 +16,6 @@ public class CustomerService {
     /**
      * Метод добавляет нового покупателя в систему
      *
-
      * @param name         хранит имя покупателя
      * @param customerType хранит тип покупателя
      * @return возвращает покупателя

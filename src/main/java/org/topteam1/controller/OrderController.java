@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OrderController {
-private Customer customer;
-private Product product;
-private final OrderService orderService;
-Scanner scanner = new Scanner(System.in);
-private ProductRepository productRepository;
-private CustomerRepository customerRepository;
+    private Customer customer;
+    private Product product;
+    private final OrderService orderService;
+    Scanner scanner = new Scanner(System.in);
+    private ProductRepository productRepository;
+    private CustomerRepository customerRepository;
 
     public OrderController(OrderService orderService, ProductRepository productRepository, CustomerRepository customerRepository) {
         this.orderService = orderService;
@@ -29,16 +29,22 @@ private CustomerRepository customerRepository;
     /**
      * Метод запускает взаимодействие с сущностью Заказ
      */
-    public void start(){
-        while(true){
-            System.out.println("Выберите действие");
-            System.out.println("1. Создать заказ \n 2.Показать все заказы\n 3.Изменить статус заказа");
+    public void start() {
+        while (true) {
+            System.out.println(">>>>Управление заказами<<<<\n" +
+                    "1) Создать заказ \n " +
+                    "2) Показать все заказы\n " +
+                    "3) Изменить статус заказа\n" +
+                    "0) Назад");
             int choise = scanner.nextInt();
             scanner.nextLine();
             switch (choise) {
                 case 1 -> createOrder();
                 case 2 -> showAllOrders();
-                case 3-> changeOrderStatus();
+                case 3 -> changeOrderStatus();
+                case 0 -> {
+                    return;
+                }
             }
         }
     }
@@ -46,7 +52,7 @@ private CustomerRepository customerRepository;
     /**
      * Метод создания заказа, с выбором покупателя и товара
      */
-    public void createOrder(){
+    public void createOrder() {
         System.out.println("Выберите покупателя");
         System.out.println(customerRepository.findCustomer());
 
@@ -69,7 +75,7 @@ private CustomerRepository customerRepository;
     /**
      * Метод выводит информацию о заказах
      */
-    public void showAllOrders(){
+    public void showAllOrders() {
         String info = orderService.getAllOrders().toString();
         System.out.println(info);
     }
@@ -77,7 +83,7 @@ private CustomerRepository customerRepository;
     /**
      * Метод изменения статуса заказа
      */
-    public void changeOrderStatus(){
+    public void changeOrderStatus() {
         int orderStatus;
         System.out.println("Выберите id заказа: ");
 
@@ -88,9 +94,9 @@ private CustomerRepository customerRepository;
         System.out.println("Выберите статус заказа: \n1.PROCESSING\n 2.COMPLETED\n 3.CANCELLED ");
 
         orderStatus = scanner.nextInt();
-        switch (orderStatus){
+        switch (orderStatus) {
             case 1 -> order.setOrderStatus("PROCESSING");
-            case 2 -> order.setOrderStatus ("COMPLETED");
+            case 2 -> order.setOrderStatus("COMPLETED");
             case 3 -> order.setOrderStatus("CANCELLED");
             default -> order.setOrderStatus("НЕПРАВИЛЬНЫЙ СТАТУС");
         }

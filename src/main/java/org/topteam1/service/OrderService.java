@@ -17,18 +17,20 @@ public class OrderService {
 
     /**
      * Метод добавления заказа в систему
+     *
      * @param customer Покупатель, который делает заказ.
-     * @param product Товар данного заказа.
+     * @param product  Товар данного заказа.
      * @return Возвращает созданный заказ.
      */
     public Order addOrder(Customer customer, Product product) {
-        Order newOrder = new Order(null, customer, product );
+        Order newOrder = new Order(null, customer, product);
         //status = "NEW";
         return orderRepository.save(newOrder);
     }
 
     /**
      * Метод получения списка заказов.
+     *
      * @return Возвращает список заказов.
      */
     public List<Order> getAllOrders() {

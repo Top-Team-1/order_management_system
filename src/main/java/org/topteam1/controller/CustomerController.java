@@ -9,7 +9,6 @@ public class CustomerController {
     private final CustomerService customerService;
 
     Scanner sc = new Scanner(System.in);
-    private Integer customerId;
     private String customerName;
     private String customerType;
 
@@ -22,20 +21,23 @@ public class CustomerController {
      */
     public void start() {
         while (true) {
-            Integer choise;
-            System.out.println("Выберите опцию");
-            System.out.println("1) Добавить покупателя \n" +
+            int choise;
+            System.out.println(">>>>Управление покупателями<<<<\n" +
+                    "1) Добавить покупателя \n" +
                     "2) Посмотреть всех покупателей \n" +
-                    "3) Найти покупателя по ID");
+                    "3) Найти покупателя по ID\n" +
+                    "0) Назад");
             choise = sc.nextInt();
             sc.nextLine();
             switch (choise) {
                 case 1 -> addCustomer();
                 case 2 -> getCustomerList();
                 case 3 -> findCustomerId();
+                case 0 -> {
+                    return;
+                }
                 default -> System.out.println("Некорректный выбор");
             }
-            break;
         }
     }
 

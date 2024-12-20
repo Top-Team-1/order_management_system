@@ -1,9 +1,9 @@
 package org.topteam1;
 
 import org.topteam1.controller.CustomerController;
+import org.topteam1.controller.MainController;
 import org.topteam1.controller.OrderController;
 import org.topteam1.controller.ProductController;
-import org.topteam1.model.Order;
 import org.topteam1.repository.CustomerRepository;
 import org.topteam1.repository.OrderRepository;
 import org.topteam1.repository.ProductRepository;
@@ -27,9 +27,9 @@ public class Main {
         OrderService orderService = new OrderService(orderRepository);
         OrderController orderController = new OrderController(orderService, productRepository, customerRepository);
 
+        MainController mainController = new MainController(productController, customerController, orderController);
+        mainController.start();
 
-        productController.start();
-        customerController.start();
-        orderController.start();
+
     }
 }
