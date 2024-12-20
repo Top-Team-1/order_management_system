@@ -19,7 +19,6 @@ public class OrderService {
      * Метод добавления заказа в систему
      * @param customer Покупатель, который делает заказ.
      * @param product Товар данного заказа.
-     * @param status Статус заказа.
      * @return Возвращает созданный заказ.
      */
     public Order addOrder(Customer customer, Product product) {
