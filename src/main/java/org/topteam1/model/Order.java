@@ -4,15 +4,15 @@ import java.util.Objects;
 
 public class Order {
     private Integer id;
-    private Customer customer;
+    private Customer customerName;
     private Product product;
-    private String status;
+    private String orderStatus;
 
-    public Order(Integer id, Customer customer, Product product, String status) {
+    public Order(Integer id, Customer customer, Product product) {
         this.id = id;
-        this.customer = customer;
+        this.customerName = customer;
         this.product = product;
-        this.status = status;
+        this.orderStatus = "NEW";
     }
 
     public Integer getId() {
@@ -23,12 +23,12 @@ public class Order {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerName(Customer customerName) {
+        this.customerName = customerName;
     }
 
     public Product getProduct() {
@@ -39,15 +39,12 @@ public class Order {
         this.product = product;
     }
 
-    public String getStatus() {
-
-
-
-        return status;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override
@@ -55,21 +52,21 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && Objects.equals(customer, order.customer) && Objects.equals(product, order.product) && Objects.equals(status, order.status);
+        return Objects.equals(id, order.id) && Objects.equals(customerName, order.customerName) && Objects.equals(product, order.product) && Objects.equals(orderStatus, order.orderStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customer, product, status);
+        return Objects.hash(id, customerName, product, orderStatus);
     }
 
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", customer=" + customer +
+                ", customer=" + customerName +
                 ", product=" + product +
-                ", status='" + status + '\'' +
+                ", status='" + orderStatus + '\'' +
                 '}';
     }
 }

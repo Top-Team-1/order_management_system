@@ -37,8 +37,8 @@ public class ProductController {
                 case 2 -> getProductList();
                 case 3 -> findProduct();
                 default -> System.out.println("Некорректный выбор"); // Бросим исключение
-
             }
+            break;
         }
 
     }
