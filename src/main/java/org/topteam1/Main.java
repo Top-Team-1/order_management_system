@@ -1,10 +1,14 @@
 package org.topteam1;
 
 import org.topteam1.controller.CustomerController;
+import org.topteam1.controller.OrderController;
 import org.topteam1.controller.ProductController;
+import org.topteam1.model.Order;
 import org.topteam1.repository.CustomerRepository;
+import org.topteam1.repository.OrderRepository;
 import org.topteam1.repository.ProductRepository;
 import org.topteam1.service.CustomerService;
+import org.topteam1.service.OrderService;
 import org.topteam1.service.ProductService;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -19,6 +23,13 @@ public class Main {
         CustomerService customerService = new CustomerService(customerRepository);
         CustomerController customerController = new CustomerController(customerService);
 
+        OrderRepository orderRepository = new OrderRepository();
+        OrderService orderService = new OrderService(orderRepository);
+        OrderController orderController = new OrderController(orderService, productRepository, customerRepository);
+
+
         productController.start();
+        customerController.start();
+        orderController.start();
     }
 }

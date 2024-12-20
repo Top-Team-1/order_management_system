@@ -35,6 +35,7 @@ public class CustomerController {
                 case 3 -> findCustomerId();
                 default -> System.out.println("Некорректный выбор");
             }
+            break;
         }
     }
 
