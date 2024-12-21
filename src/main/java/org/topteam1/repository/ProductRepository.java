@@ -3,6 +3,8 @@
  */
 package org.topteam1.repository;
 
+import org.topteam1.Exceptions.ProductNotAddException;
+import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.model.Product;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class ProductRepository {
         if (products.add(product)) {
             return product;
         }
-        return null;   //бросить исключение если что-то пошло не так.
+        throw new ProductNotAddException("Не получилось добавить товар");
     }
 
     /**
@@ -51,6 +53,6 @@ public class ProductRepository {
         return products.stream()
                 .filter(p -> p != null && p.getId() == id)
                 .findFirst()
-                .orElse(null);    // бросить исключение, реализуем позже.
+                .orElseThrow(() -> new ProductNotFoundException("Товара с ID " + id + " не найден!"));
     }
 }

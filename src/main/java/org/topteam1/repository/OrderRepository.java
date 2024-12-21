@@ -1,5 +1,7 @@
 package org.topteam1.repository;
 
+import org.topteam1.Exceptions.OrderNotAddException;
+import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.model.Order;
 
 import java.util.ArrayList;
@@ -28,7 +30,19 @@ public class OrderRepository {
         if (orderList.add(order)) {
             return order;
         }
-        return null;
+        throw new OrderNotAddException("Не получилось добавить заказ");
+    }
+
+    /**
+     * Метод для поиска товара по ID.
+     * @param id В качестве параметра принимает ID заказа.
+     * @return Возвращает товар найденный по ID.
+     */
+    public Order findOrder(int id){
+        return orderList.stream()
+                .filter(o -> o != null && o.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new OrderNotFoundException("Заказ с ID " + id + " не найден!"));
     }
 
     /**
@@ -36,7 +50,7 @@ public class OrderRepository {
      *
      * @return Список заказов
      */
-    public List<Order> findOrder() {
+    public List<Order> findAllOrder() {
         return orderList;
     }
 }

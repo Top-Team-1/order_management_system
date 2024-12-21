@@ -36,6 +36,7 @@ public class MainController {
                 case 0 -> {
                     return;
                 }
+                default -> System.out.println("Неверный выбор, попробуйте ещё раз");
             }
         }
     }

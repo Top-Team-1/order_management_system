@@ -1,5 +1,7 @@
 package org.topteam1.controller;
 
+import org.topteam1.Exceptions.CustomerNotAddException;
+import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.service.CustomerService;
 
 import java.util.Scanner;
@@ -36,7 +38,7 @@ public class CustomerController {
                 case 0 -> {
                     return;
                 }
-                default -> System.out.println("Некорректный выбор");
+                default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
             }
         }
     }
@@ -45,7 +47,7 @@ public class CustomerController {
      * Метод для работы с покупателем, добавлением его в список и присваиванием ему статуса
      */
     private void addCustomer() {
-        Integer customerCategory = 0;
+        int customerCategory;
         System.out.println("Введите Ваше имя: ");
         customerName = sc.nextLine();
         System.out.println("""
@@ -58,10 +60,17 @@ public class CustomerController {
             case 1 -> customerType = "Новый покупатель";
             case 2 -> customerType = "Постоянный покупатель";
             case 3 -> customerType = "VIP покупатель";
-            default -> customerType = "Неверный тип покупателя";
+            default -> {
+                System.out.println("Статус покупателя выбран неверно, попробуйте ещё раз");
+                return;
+            }
         }
-        String info = customerService.addCustomer(customerName, customerType).toString();
-        System.out.println(info);
+        try {
+            String info = customerService.addCustomer(customerName, customerType).toString();
+            System.out.println(info);
+        }catch (CustomerNotAddException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -73,11 +82,15 @@ public class CustomerController {
     }
 
     private void findCustomerId() {
-        Integer findId;
+        int findId;
         System.out.println("Введите ID покупателя для поиска");
         findId = sc.nextInt();
         sc.nextLine();
-        String info = customerService.getCustomerForId(findId).toString();
-        System.out.println(info);
+        try {
+            String info = customerService.getCustomerForId(findId).toString();
+            System.out.println(info);
+        }catch (CustomerNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
