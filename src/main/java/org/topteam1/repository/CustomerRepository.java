@@ -1,5 +1,7 @@
 package org.topteam1.repository;
 
+import org.topteam1.Exceptions.CustomerNotAddException;
+import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.model.Customer;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public class CustomerRepository {
         if (customers.add(customer)) {
             return customer;
         }
-        return null;
+        throw new CustomerNotAddException("Не получилось добавить покупателя");
     }
 
     /**
@@ -47,6 +49,9 @@ public class CustomerRepository {
      * @return возвращает покупателя с заданным ID
      */
     public Customer findCustomerForId(int customerId) {
-        return customers.stream().filter(c -> c != null && c.getId() == customerId).findFirst().orElse(null);
+        return customers.stream()
+                .filter(c -> c != null && c.getId() == customerId)
+                .findFirst()
+                .orElseThrow(() -> new CustomerNotFoundException("Покупатель с ID " + customerId + " не найден!"));
     }
 }

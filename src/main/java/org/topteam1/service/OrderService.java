@@ -27,12 +27,16 @@ public class OrderService {
         return orderRepository.save(newOrder);
     }
 
+    public Order getOrder(int id){
+        return orderRepository.findOrder(id);
+    }
+
     /**
      * Метод получения списка заказов.
      *
      * @return Возвращает список заказов.
      */
     public List<Order> getAllOrders() {
-        return orderRepository.findOrder();
+        return orderRepository.findAllOrder();
     }
 }
