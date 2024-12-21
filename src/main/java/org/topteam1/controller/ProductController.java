@@ -26,21 +26,23 @@ public class ProductController {
     public void start() {
         while (true) {
             int choise;
-            System.out.println("Выберете опцию");
-            System.out.println("1)Добавить товар\n" +
-                    "2)Посмотреть все доступные товары\n" +
-                    "3)Найти товар по ID");
+            System.out.println(">>>>Управление товарами<<<<\n" +
+                    "1) Добавить товар\n" +
+                    "2) Посмотреть все доступные товары\n" +
+                    "3) Найти товар по ID\n" +
+                    "0) Назад");
             choise = sc.nextInt();
             sc.nextLine();
             switch (choise) {
                 case 1 -> addProduct();
                 case 2 -> getProductList();
                 case 3 -> findProduct();
+                case 0 -> {
+                    return;
+                }
                 default -> System.out.println("Некорректный выбор"); // Бросим исключение
             }
-            break;
         }
-
     }
 
     /**
