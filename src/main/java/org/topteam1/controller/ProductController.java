@@ -49,7 +49,7 @@ public class ProductController {
      * Метод инициализирует поля класса Товар и добавляет его в список.
      */
     private void addProduct() {
-        int categoryNumber = 0;
+        int categoryNumber;
         System.out.print("Введите название товара - ");
         productName = sc.nextLine();
         System.out.print("Введите цену товара - ");

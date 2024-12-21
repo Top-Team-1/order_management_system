@@ -4,12 +4,9 @@ import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
 import org.topteam1.model.Product;
 import org.topteam1.repository.CustomerRepository;
-import org.topteam1.repository.OrderRepository;
 import org.topteam1.repository.ProductRepository;
 import org.topteam1.service.OrderService;
 
-import java.sql.SQLOutput;
-import java.util.List;
 import java.util.Scanner;
 
 public class OrderController {
@@ -32,8 +29,8 @@ public class OrderController {
     public void start() {
         while (true) {
             System.out.println(">>>>Управление заказами<<<<\n" +
-                    "1) Создать заказ \n " +
-                    "2) Показать все заказы\n " +
+                    "1) Создать заказ\n" +
+                    "2) Показать все заказы\n" +
                     "3) Изменить статус заказа\n" +
                     "0) Назад");
             int choise = scanner.nextInt();
