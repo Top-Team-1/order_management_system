@@ -24,7 +24,6 @@ public class OrderService {
      */
     public Order addOrder(Customer customer, Product product) {
         Order newOrder = new Order(null, customer, product);
-        //status = "NEW";
         return orderRepository.save(newOrder);
     }
 

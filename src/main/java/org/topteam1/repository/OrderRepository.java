@@ -18,6 +18,7 @@ public class OrderRepository {
 
     /**
      * Метод сохраняет заказ в репозиторий
+     *
      * @param order Заказ для сохранения
      * @return Сохранённый заказ
      */
@@ -32,9 +33,10 @@ public class OrderRepository {
 
     /**
      * Метод поиска списка заказов
+     *
      * @return Список заказов
      */
-    public List<Order> findOrder(){
+    public List<Order> findOrder() {
         return orderList;
     }
 }

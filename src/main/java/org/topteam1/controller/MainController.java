@@ -23,10 +23,10 @@ public class MainController {
     public void start() {
         while (true) {
             System.out.println(">>>>Главное меню<<<<\n" +
-                    "1)Работа с товаром\n" +
-                    "2)Работа с покупателем\n" +
-                    "3)Работа с заказом\n" +
-                    "0)Выход из программы");
+                    "1) Работа с товаром\n" +
+                    "2) Работа с покупателем\n" +
+                    "3) Работа с заказом\n" +
+                    "0) Выход из программы");
             int choise = sc.nextInt();
             sc.nextLine();
             switch (choise) {
