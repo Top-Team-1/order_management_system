@@ -3,6 +3,8 @@
  */
 package org.topteam1.controller;
 
+import org.topteam1.Exceptions.ProductNotAddException;
+import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.service.ProductService;
 
 import java.util.Scanner;
@@ -40,7 +42,7 @@ public class ProductController {
                 case 0 -> {
                     return;
                 }
-                default -> System.out.println("Некорректный выбор"); // Бросим исключение
+                default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
             }
         }
     }
@@ -65,11 +67,17 @@ public class ProductController {
             case 1 -> productCategory = "Смартфоны";
             case 2 -> productCategory = "Телевизоры";
             case 3 -> productCategory = "Бытовая техника";
-            default ->
-                    productCategory = "Неизвестная категория"; // Тут будем бросать исключения, когда их добавим, пока так.
+            default -> {
+                System.out.println("Такой категории нет, попробуйте ещё раз");
+                return;
+            }
         }
-        String info = productService.addProduct(productName, productPrice, productCategory).toString();
-        System.out.println(info);
+        try {
+            String info = productService.addProduct(productName, productPrice, productCategory).toString();
+            System.out.println(info);
+        }catch (ProductNotAddException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -88,7 +96,11 @@ public class ProductController {
         System.out.println("Введите ID товара для поиска");
         findID = sc.nextInt();
         sc.nextLine();
-        String info = productService.getProduct(findID).toString();
-        System.out.println(info);
+        try {
+            String info = productService.getProduct(findID).toString();
+            System.out.println(info);
+        }catch (ProductNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
