@@ -18,8 +18,8 @@ public class OrderController {
     private Product product;
     private final OrderService orderService;
     Scanner scanner = new Scanner(System.in);
-    private ProductRepository productRepository;
-    private CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
+    private final CustomerRepository customerRepository;
 
     public OrderController(OrderService orderService, ProductRepository productRepository, CustomerRepository customerRepository) {
         this.orderService = orderService;
@@ -32,22 +32,24 @@ public class OrderController {
      */
     public void start() {
         while (true) {
-            System.out.println(">>>>Управление заказами<<<<\n" +
-                    "1) Создать заказ\n" +
-                    "2) Показать заказ по ID\n" +
-                    "3) Показать все заказы\n" +
-                    "4) Изменить статус заказа\n" +
-                    "0) Назад");
-            int choise = scanner.nextInt();
+            System.out.println("""
+                    >>>>Управление заказами<<<<
+                    1) Создать заказ
+                    2) Показать заказ по ID
+                    3) Показать все заказы
+                    4) Изменить статус заказа
+                    0) Назад""");
+            int choice = scanner.nextInt();
             scanner.nextLine();
-            switch (choise) {
+            switch (choice) {
                 case 1 -> createOrder();
                 case 2 -> showOrder();
                 case 3 -> showAllOrders();
                 case 4 -> changeOrderStatus();
                 case 0 -> {
                     return;
-                }default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
+                }
+                default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
             }
         }
     }
@@ -59,35 +61,28 @@ public class OrderController {
         System.out.println("Выберите покупателя");
         System.out.println(customerRepository.findCustomer());
 
-        int choiseCustomer = scanner.nextInt();
+        int choiceCustomer = scanner.nextInt();
         try {
-            customer = customerRepository.findCustomerForId(choiseCustomer);
-        }catch (CustomerNotFoundException e){
-            System.out.println(e.getMessage());
-            return;
-        }
-        scanner.nextLine();
+            customer = customerRepository.findCustomerForId(choiceCustomer);
 
-        System.out.println("Выберите товар");
-        System.out.println(productRepository.findAll());
+            scanner.nextLine();
 
-        int choiseProduct = scanner.nextInt();
-        try {
-            product = productRepository.returnProduct(choiseProduct);
-        }catch (ProductNotFoundException e){
-            System.out.println(e.getMessage());
-            return;
-        }
-        scanner.nextLine();
-        try {
+            System.out.println("Выберите товар");
+            System.out.println(productRepository.findAll());
+
+            int choiceProduct = scanner.nextInt();
+
+            product = productRepository.returnProduct(choiceProduct);
+            scanner.nextLine();
+
             String info = orderService.addOrder(customer, product).toString();
             System.out.println(info);
-        }catch (OrderNotAddException e){
+        } catch (CustomerNotFoundException | ProductNotFoundException | OrderNotAddException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void showOrder(){
+    public void showOrder() {
         int findID;
         System.out.println("Введите ID товара для поиска");
         findID = scanner.nextInt();
@@ -95,7 +90,7 @@ public class OrderController {
         try {
             String info = orderService.getOrder(findID).toString();
             System.out.println(info);
-        }catch (OrderNotFoundException e){
+        } catch (OrderNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -135,7 +130,7 @@ public class OrderController {
 
             String info = orderService.toString();
             System.out.println(info);
-        }catch (OrderNotFoundException e){
+        } catch (OrderNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }

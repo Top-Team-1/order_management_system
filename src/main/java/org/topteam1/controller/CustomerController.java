@@ -11,8 +11,6 @@ public class CustomerController {
     private final CustomerService customerService;
 
     Scanner sc = new Scanner(System.in);
-    private String customerName;
-    private String customerType;
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -23,15 +21,16 @@ public class CustomerController {
      */
     public void start() {
         while (true) {
-            int choise;
-            System.out.println(">>>>Управление покупателями<<<<\n" +
-                    "1) Добавить покупателя \n" +
-                    "2) Посмотреть всех покупателей \n" +
-                    "3) Найти покупателя по ID\n" +
-                    "0) Назад");
-            choise = sc.nextInt();
+            int choice;
+            System.out.println("""
+                    >>>>Управление покупателями<<<<
+                    1) Добавить покупателя\s
+                    2) Посмотреть всех покупателей\s
+                    3) Найти покупателя по ID
+                    0) Назад""");
+            choice = sc.nextInt();
             sc.nextLine();
-            switch (choise) {
+            switch (choice) {
                 case 1 -> addCustomer();
                 case 2 -> getCustomerList();
                 case 3 -> findCustomerId();
@@ -49,13 +48,14 @@ public class CustomerController {
     private void addCustomer() {
         int customerCategory;
         System.out.println("Введите Ваше имя: ");
-        customerName = sc.nextLine();
+        String customerName = sc.nextLine();
         System.out.println("""
                 Выберите тип покупателя
                 1) Новый покупатель
                 2) Постоянный покупатель\s
                 3) VIP покупатель\s""");
         customerCategory = sc.nextInt();
+        String customerType;
         switch (customerCategory) {
             case 1 -> customerType = "Новый покупатель";
             case 2 -> customerType = "Постоянный покупатель";
