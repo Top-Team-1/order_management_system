@@ -25,7 +25,7 @@ public class ProductService {
      * @return Возвращает созданный объект.
      */
     public Product addProduct(String name, Integer price, String category) {
-        Product newProduct = new Product(null, name, price, category);
+        Product newProduct = new Product(name, price, category);
         return productRepository.save(newProduct);
     }
 

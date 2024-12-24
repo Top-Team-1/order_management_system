@@ -14,7 +14,7 @@ import org.topteam1.service.ProductService;
 
 public class Main {
     public static void main(String[] args) {
-        ProductRepository productRepository = new ProductRepository();
+        ProductRepository productRepository = new ProductRepository("src/main/java/org/topteam1/repository/products.txt");
         ProductService productService = new ProductService(productRepository);
         ProductController productController = new ProductController(productService);
 

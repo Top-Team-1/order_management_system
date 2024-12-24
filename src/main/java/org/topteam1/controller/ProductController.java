@@ -3,6 +3,7 @@
  */
 package org.topteam1.controller;
 
+import org.topteam1.Exceptions.ProductFileNotFoundException;
 import org.topteam1.Exceptions.ProductNotAddException;
 import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.model.ProductCategory;
@@ -74,8 +75,12 @@ public class ProductController {
      * Метод отображает все доступные товары.
      */
     private void getProductList() {
-        String info = productService.getAll().toString();
-        System.out.println(info);
+        try {
+            String info = productService.getAll().toString();
+            System.out.println(info);
+        }catch (ProductFileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -89,7 +94,7 @@ public class ProductController {
         try {
             String info = productService.getProduct(findID).toString();
             System.out.println(info);
-        } catch (ProductNotFoundException e) {
+        } catch (ProductFileNotFoundException | ProductNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
