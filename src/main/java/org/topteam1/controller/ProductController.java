@@ -5,6 +5,7 @@ package org.topteam1.controller;
 
 import org.topteam1.Exceptions.ProductNotAddException;
 import org.topteam1.Exceptions.ProductNotFoundException;
+import org.topteam1.model.ProductCategory;
 import org.topteam1.service.ProductService;
 
 import java.util.Scanner;
@@ -13,9 +14,6 @@ public class ProductController {
     private final ProductService productService;
 
     Scanner sc = new Scanner(System.in);
-    private String productName;
-    private Integer productPrice;
-    private String productCategory;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -27,15 +25,16 @@ public class ProductController {
      */
     public void start() {
         while (true) {
-            int choise;
-            System.out.println(">>>>Управление товарами<<<<\n" +
-                    "1) Добавить товар\n" +
-                    "2) Посмотреть все доступные товары\n" +
-                    "3) Найти товар по ID\n" +
-                    "0) Назад");
-            choise = sc.nextInt();
+            int choice;
+            System.out.println("""
+                    >>>>Управление товарами<<<<
+                    1) Добавить товар
+                    2) Посмотреть все доступные товары
+                    3) Найти товар по ID
+                    0) Назад""");
+            choice = sc.nextInt();
             sc.nextLine();
-            switch (choise) {
+            switch (choice) {
                 case 1 -> addProduct();
                 case 2 -> getProductList();
                 case 3 -> findProduct();
@@ -53,29 +52,20 @@ public class ProductController {
     private void addProduct() {
         int categoryNumber;
         System.out.print("Введите название товара - ");
-        productName = sc.nextLine();
+        String productName = sc.nextLine();
         System.out.print("Введите цену товара - ");
-        productPrice = sc.nextInt();
+        Integer productPrice = sc.nextInt();
         sc.nextLine();
-        System.out.println("""
-                Введите категорию товара
-                1)Смартфоны
-                2)Телевизоры\s
-                3)Бытовая техника \s""");
+        System.out.println("Выберете категорию товара\n" +
+                "1)" + ProductCategory.SMARTPHONE.getRus() +"\n" +
+                "2)" + ProductCategory.TV.getRus() + "\n" +
+                "3)" + ProductCategory.HOUSEHOLD_APPLIANCES.getRus());
         categoryNumber = sc.nextInt();
-        switch (categoryNumber) {
-            case 1 -> productCategory = "Смартфоны";
-            case 2 -> productCategory = "Телевизоры";
-            case 3 -> productCategory = "Бытовая техника";
-            default -> {
-                System.out.println("Такой категории нет, попробуйте ещё раз");
-                return;
-            }
-        }
         try {
+            String productCategory = String.valueOf(ProductCategory.getProductByNumber(categoryNumber).getRus());
             String info = productService.addProduct(productName, productPrice, productCategory).toString();
             System.out.println(info);
-        }catch (ProductNotAddException e){
+        } catch (IllegalArgumentException | ProductNotAddException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -99,7 +89,7 @@ public class ProductController {
         try {
             String info = productService.getProduct(findID).toString();
             System.out.println(info);
-        }catch (ProductNotFoundException e){
+        } catch (ProductNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
