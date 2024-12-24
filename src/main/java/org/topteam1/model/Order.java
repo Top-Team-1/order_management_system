@@ -12,7 +12,7 @@ public class Order {
         this.id = id;
         this.customerName = customer;
         this.product = product;
-        this.orderStatus = "NEW";
+        this.orderStatus = OrderStatus.NEW.getRus();
     }
 
     public Integer getId() {

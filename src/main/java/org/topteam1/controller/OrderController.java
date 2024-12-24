@@ -6,6 +6,7 @@ import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
+import org.topteam1.model.OrderStatus;
 import org.topteam1.model.Product;
 import org.topteam1.repository.CustomerRepository;
 import org.topteam1.repository.ProductRepository;
@@ -108,27 +109,23 @@ public class OrderController {
      */
     public void changeOrderStatus() {
         try {
-            int orderStatus;
             System.out.println("Выберите id заказа: ");
 
             int idOrder = scanner.nextInt();
             scanner.nextLine();
 
             Order order = orderService.getOrder(idOrder);
-            System.out.println("Выберите статус заказа: \n1.PROCESSING\n 2.COMPLETED\n 3.CANCELLED ");
+            System.out.println("Выберите статус заказа:\n" +
+                    "1)" + OrderStatus.PROCESSING.getRus() + "\n" +
+                    "2)" + OrderStatus.COMPLETED.getRus() + "\n" +
+                    "3)" + OrderStatus.CANCELED.getRus());
 
-            orderStatus = scanner.nextInt();
-            switch (orderStatus) {
-                case 1 -> order.setOrderStatus("PROCESSING");
-                case 2 -> order.setOrderStatus("COMPLETED");
-                case 3 -> order.setOrderStatus("CANCELLED");
-                default -> {
-                    System.out.println("Неверный статус заказа");
-                    return;
-                }
-            }
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            String orderStatus = String.valueOf(OrderStatus.getOrderStatus(choice).getRus());
+            order.setOrderStatus(orderStatus);
 
-            String info = orderService.toString();
+            String info = orderService.getOrder(idOrder).toString();
             System.out.println(info);
         } catch (OrderNotFoundException e) {
             System.out.println(e.getMessage());
