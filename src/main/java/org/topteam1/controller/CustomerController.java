@@ -1,5 +1,6 @@
 package org.topteam1.controller;
 
+import org.topteam1.Exceptions.CustomerFileNotFoundException;
 import org.topteam1.Exceptions.CustomerNotAddException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.model.CustomerType;
@@ -68,10 +69,18 @@ public class CustomerController {
      * Метод отображает всех покупателей
      */
     private void getCustomerList() {
-        String info = customerService.getCustomer().toString();
-        System.out.println(info);
+
+        try {
+            String info = customerService.getCustomer().toString();
+            System.out.println(info);
+        } catch (CustomerFileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    /**
+     * Метод выполняет поиск покупателя по ID
+     */
     private void findCustomerId() {
         int findId;
         System.out.println("Введите ID покупателя для поиска");

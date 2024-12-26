@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class Customer {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String customerType;
 
-    public Customer(Integer id, String name, String customerType) {
-        this.id = id;
+    public Customer(String name, String customerType) {
+        this.id = null;
         this.name = name;
         this.customerType = customerType;
     }
@@ -17,11 +17,11 @@ public class Customer {
     public Customer() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,6 +56,13 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "ID покупателя: " + id + ". Имя покупателя: " + name + ". Тип покупателя: " + customerType + "\n";
+        return  id + ", " + name + ", " + customerType + "\n";
+    }
+
+    public Customer(String customerFromFile) {
+        String[] parts = customerFromFile.split(",");
+        this.id = Long.parseLong(parts[0]);
+        this.name = parts[1];
+        this.customerType = parts[2];
     }
 }
