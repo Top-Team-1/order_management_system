@@ -56,6 +56,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "ID покупателя: " + id + ". Имя покупателя: " + name + ". Тип покупателя: " + customerType;
+        return "ID покупателя: " + id + ". Имя покупателя: " + name + ". Тип покупателя: " + customerType + "\n";
     }
 }

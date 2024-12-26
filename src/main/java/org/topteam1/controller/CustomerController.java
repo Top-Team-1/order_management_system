@@ -2,6 +2,7 @@ package org.topteam1.controller;
 
 import org.topteam1.Exceptions.CustomerNotAddException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
+import org.topteam1.model.CustomerType;
 import org.topteam1.service.CustomerService;
 
 import java.util.Scanner;
@@ -49,26 +50,16 @@ public class CustomerController {
         int customerCategory;
         System.out.println("Введите Ваше имя: ");
         String customerName = sc.nextLine();
-        System.out.println("""
-                Выберите тип покупателя
-                1) Новый покупатель
-                2) Постоянный покупатель\s
-                3) VIP покупатель\s""");
+        System.out.println("Выберите тип покупателя:\n" +
+                "1)" + CustomerType.NEW.getRus() + "\n" +
+                "2)" + CustomerType.REGULAR.getRus() + "\n" +
+                "3)" + CustomerType.VIP.getRus());
         customerCategory = sc.nextInt();
-        String customerType;
-        switch (customerCategory) {
-            case 1 -> customerType = "Новый покупатель";
-            case 2 -> customerType = "Постоянный покупатель";
-            case 3 -> customerType = "VIP покупатель";
-            default -> {
-                System.out.println("Статус покупателя выбран неверно, попробуйте ещё раз");
-                return;
-            }
-        }
         try {
+            String customerType = String.valueOf(CustomerType.getCustomerByType(customerCategory).getRus());
             String info = customerService.addCustomer(customerName, customerType).toString();
             System.out.println(info);
-        }catch (CustomerNotAddException e){
+        } catch (CustomerNotAddException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -89,7 +80,7 @@ public class CustomerController {
         try {
             String info = customerService.getCustomerForId(findId).toString();
             System.out.println(info);
-        }catch (CustomerNotFoundException e){
+        } catch (CustomerNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
