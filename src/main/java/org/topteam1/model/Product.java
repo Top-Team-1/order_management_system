@@ -6,23 +6,23 @@ package org.topteam1.model;
 import java.util.Objects;
 
 public class Product {
-    private Integer id;
+    private Long id;
     private String name;
     private Integer price;
     private String category;
 
-    public Product(Integer id, String name, Integer price, String category) {
-        this.id = id;
+    public Product(String name, Integer price, String category) {
+        this.id = null;
         this.name = name;
         this.price = price;
         this.category = category;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -65,6 +65,14 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + id + ", " + name + ", " + price + ", " + category + "}"; // Метод toString приведем потом к общему формату
+        return id + "," + name + "," + price + "," + category +"\n";
+    }
+
+    public Product(String productFromFile) {
+        String[] parts = productFromFile.split(",");
+        this.id = Long.parseLong(parts[0]);
+        this.name = parts[1];
+        this.price = Integer.parseInt(parts[2]);
+        this.category = parts[3];
     }
 }
