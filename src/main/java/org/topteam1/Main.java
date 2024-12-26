@@ -18,7 +18,7 @@ public class Main {
         ProductService productService = new ProductService(productRepository);
         ProductController productController = new ProductController(productService);
 
-        CustomerRepository customerRepository = new CustomerRepository();
+        CustomerRepository customerRepository = new CustomerRepository("src/main/java/org/topteam1/repository/customers.txt");
         CustomerService customerService = new CustomerService(customerRepository);
         CustomerController customerController = new CustomerController(customerService);
 

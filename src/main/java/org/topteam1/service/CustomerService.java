@@ -21,7 +21,7 @@ public class CustomerService {
      * @return возвращает покупателя
      */
     public Customer addCustomer(String name, String customerType) {
-        Customer newCustomer = new Customer(null, name, customerType);
+        Customer newCustomer = new Customer(name, customerType);
         return customerRepository.saveCustomer(newCustomer);
     }
 
