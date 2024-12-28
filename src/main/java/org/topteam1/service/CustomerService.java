@@ -31,7 +31,7 @@ public class CustomerService {
      * @return возвращает список покупателей
      */
     public List<Customer> getCustomer() {
-        return customerRepository.findCustomer();
+        return customerRepository.findAllCustomers();
     }
 
     /**
@@ -41,6 +41,6 @@ public class CustomerService {
      * @return возвращает покупателя с заданным ID
      */
     public Customer getCustomerForId(Integer id) {
-        return customerRepository.findCustomerForId(id);
+        return customerRepository.findCustomer(id);
     }
 }

@@ -60,20 +60,20 @@ public class OrderController {
      */
     public void createOrder() {
         System.out.println("Выберите покупателя");
-        System.out.println(customerRepository.findCustomer());
+        System.out.println(customerRepository.findAllCustomers());
 
         int choiceCustomer = scanner.nextInt();
         try {
-            customer = customerRepository.findCustomerForId(choiceCustomer);
+            customer = customerRepository.findCustomer(choiceCustomer);
 
             scanner.nextLine();
 
             System.out.println("Выберите товар");
-            System.out.println(productRepository.findAll());
+            System.out.println(productRepository.findAllProduct());
 
             int choiceProduct = scanner.nextInt();
 
-            product = productRepository.returnProduct(choiceProduct);
+            product = productRepository.findProduct(choiceProduct);
             scanner.nextLine();
 
             String info = orderService.addOrder(customer, product).toString();
@@ -83,6 +83,9 @@ public class OrderController {
         }
     }
 
+    /**
+     * Метод выводит информацию заказа по ID
+     */
     public void showOrder() {
         int findID;
         System.out.println("Введите ID товара для поиска");
@@ -114,7 +117,6 @@ public class OrderController {
             int idOrder = scanner.nextInt();
             scanner.nextLine();
 
-            Order order = orderService.getOrder(idOrder);
             System.out.println("Выберите статус заказа:\n" +
                     "1)" + OrderStatus.PROCESSING.getRus() + "\n" +
                     "2)" + OrderStatus.COMPLETED.getRus() + "\n" +
@@ -122,10 +124,8 @@ public class OrderController {
 
             int choice = scanner.nextInt();
             scanner.nextLine();
-            String orderStatus = String.valueOf(OrderStatus.getOrderStatus(choice).getRus());
-            order.setOrderStatus(orderStatus);
 
-            String info = orderService.getOrder(idOrder).toString();
+            String info = orderService.updateOrderStatus(idOrder, choice).toString();
             System.out.println(info);
         } catch (OrderNotFoundException e) {
             System.out.println(e.getMessage());

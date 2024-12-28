@@ -1,21 +1,39 @@
 package org.topteam1.repository;
 
-import org.topteam1.Exceptions.OrderNotAddException;
 import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.model.Order;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class OrderRepository {
 
-    private final List<Order> orderList;
-    private int countId;
+    private final Path filePath;
+    private final Path filePathId;
+    private Long id;
 
 
-    public OrderRepository() {
-        this.orderList = new ArrayList<>();
-        countId = 0;
+    public OrderRepository(String file) {
+        this.filePath = Path.of(file);
+        this.filePathId = Path.of(file + "_id");
+        id = 0L;
+        try {
+            if (!Files.exists(filePath)) {
+                Files.createFile(filePath);
+            }
+            if (Files.exists(filePathId)) {
+                id = Long.parseLong(Files.readString(filePathId));
+            } else {
+                Files.createFile(filePathId);
+                Files.write(filePathId, id.toString().getBytes());
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -25,24 +43,30 @@ public class OrderRepository {
      * @return Сохранённый заказ
      */
     public Order save(Order order) {
-        order.setId(++countId);
-
-        if (orderList.add(order)) {
-            return order;
+        order.setId(++id);
+        try {
+            Files.write(filePath, (order + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+            Files.write(filePathId, id.toString().getBytes());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        throw new OrderNotAddException("Не получилось добавить заказ");
+        return order;
     }
 
     /**
-     * Метод для поиска товара по ID.
+     * Метод для поиска заказа по ID
+     *
      * @param id В качестве параметра принимает ID заказа.
-     * @return Возвращает товар найденный по ID.
+     * @return Возвращает заказ найденный по ID.
      */
-    public Order findOrder(int id){
-        return orderList.stream()
-                .filter(o -> o != null && o.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new OrderNotFoundException("Заказ с ID " + id + " не найден!"));
+    public Order findOrder(int id) {
+        try (Stream<String> lines = Files.lines(filePath)) {
+            return lines.map(Order::new)
+                    .filter(o -> o.getId() == id)
+                    .findFirst().orElseThrow(() -> new OrderNotFoundException("Заказ с ID " + id + " не найден!"));
+        } catch (IOException e) {
+            throw new OrderNotFoundException(e.getMessage()); // заглушка
+        }
     }
 
     /**
@@ -51,6 +75,37 @@ public class OrderRepository {
      * @return Список заказов
      */
     public List<Order> findAllOrder() {
-        return orderList;
+        try {
+            return Files.readAllLines(filePath).stream()
+                    .map(Order::new)
+                    .toList();
+        } catch (IOException e) {
+            throw new OrderNotFoundException(e.getMessage()); // заглушка. поменять
+        }
+    }
+
+    /**
+     * Метод сохранения статуса заказа
+     *
+     * @param order Заказ
+     * @return Возвращает заказ с обновленным статусом
+     */
+    public Order saveNewOrderStatus(Order order) {
+        try {
+            List<String> allOrders = Files.readAllLines(filePath);
+            List<String> updateStatus = allOrders.stream()
+                    .map(o -> {
+                        Order orderWithNewStatus = new Order(o);
+                        if (orderWithNewStatus.getId().equals(order.getId())) {
+                            return order.toString();
+                        }
+                        return o;
+                    })
+                    .toList();
+            Files.write(filePath, updateStatus);
+        } catch (IOException e) {
+            System.out.println(e.getMessage()); //заглушка
+        }
+        return order;
     }
 }

@@ -50,7 +50,8 @@ public class ProductRepository {
         product.setId(++id);
 
         try {
-            Files.write(filePath, product.toString().getBytes(), StandardOpenOption.APPEND);
+            //Files.write(filePath, product.toString().getBytes(), StandardOpenOption.APPEND);
+            Files.write(filePath, (product.toString() + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
             Files.write(filePathId, id.toString().getBytes());
         } catch (IOException e) {
             throw new ProductNotAddException("Не удалось добавить товар!");
@@ -63,7 +64,7 @@ public class ProductRepository {
      *
      * @return список товаров.
      */
-    public List<Product> findAll() {
+    public List<Product> findAllProduct() {
         try {
            return Files.readAllLines(filePath).stream()
                     .map(Product::new)
@@ -79,7 +80,7 @@ public class ProductRepository {
      * @param id id товара.
      * @return найденный товар.
      */
-    public Product returnProduct(int id) {
+    public Product findProduct(int id) {
         try (Stream<String> lines = Files.lines(filePath)) {
             return lines.map(Product::new)
                     .filter(p -> p.getId() == id)

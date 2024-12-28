@@ -3,32 +3,32 @@ package org.topteam1.model;
 import java.util.Objects;
 
 public class Order {
-    private Integer id;
-    private Customer customerName;
+    private Long id;
+    private Customer customer;
     private Product product;
-    private String orderStatus;
+    private OrderStatus orderStatus;
 
-    public Order(Integer id, Customer customer, Product product) {
+    public Order(Long id, Customer customer, Product product) {
         this.id = id;
-        this.customerName = customer;
+        this.customer = customer;
         this.product = product;
-        this.orderStatus = OrderStatus.NEW.getRus();
+        this.orderStatus = OrderStatus.NEW;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Customer getCustomerName() {
-        return customerName;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerName(Customer customerName) {
-        this.customerName = customerName;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Product getProduct() {
@@ -39,11 +39,11 @@ public class Order {
         this.product = product;
     }
 
-    public String getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -52,21 +52,24 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && Objects.equals(customerName, order.customerName) && Objects.equals(product, order.product) && Objects.equals(orderStatus, order.orderStatus);
+        return Objects.equals(id, order.id) && Objects.equals(customer, order.customer) && Objects.equals(product, order.product) && Objects.equals(orderStatus, order.orderStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerName, product, orderStatus);
+        return Objects.hash(id, customer, product, orderStatus);
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", customer=" + customerName +
-                ", product=" + product +
-                ", status='" + orderStatus + '\'' +
-                '}';
+        return id + "/" + customer + "/" + product + "/" + orderStatus.getRus();
+    }
+
+    public Order(String orderFromFile) {
+        String[] parts = orderFromFile.split("/");
+        this.id = Long.parseLong(parts[0]);
+        this.customer = new Customer(parts[1]);//  findCustomerForID
+        this.product = new Product(parts[2]);// findProductForID
+        this.orderStatus = OrderStatus.valueOf(parts[3]);
     }
 }

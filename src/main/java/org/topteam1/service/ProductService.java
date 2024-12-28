@@ -35,7 +35,7 @@ public class ProductService {
      * @return список товаров.
      */
     public List<Product> getAll() {
-        return productRepository.findAll();
+        return productRepository.findAllProduct();
     }
 
     /**
@@ -45,6 +45,6 @@ public class ProductService {
      * @return возвращает товар по id.
      */
     public Product getProduct(int id) {
-        return productRepository.returnProduct(id);
+        return productRepository.findProduct(id);
     }
 }
