@@ -65,7 +65,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return id + "," + name + "," + price + "," + category +"\n";
+        return id + "," + name + "," + price + "," + category;
     }
 
     public Product(String productFromFile) {

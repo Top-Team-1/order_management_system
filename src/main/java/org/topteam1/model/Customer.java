@@ -56,7 +56,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return  id + ", " + name + ", " + customerType + "\n";
+        return  id + "," + name + "," + customerType;
     }
 
     public Customer(String customerFromFile) {

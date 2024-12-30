@@ -22,8 +22,8 @@ public class Main {
         CustomerService customerService = new CustomerService(customerRepository);
         CustomerController customerController = new CustomerController(customerService);
 
-        OrderRepository orderRepository = new OrderRepository();
-        OrderService orderService = new OrderService(orderRepository);
+        OrderRepository orderRepository = new OrderRepository("src/main/java/org/topteam1/repository/orders.txt");
+        OrderService orderService = new OrderService(orderRepository, customerRepository, productRepository);
         OrderController orderController = new OrderController(orderService, productRepository, customerRepository);
 
         MainController mainController = new MainController(productController, customerController, orderController);
