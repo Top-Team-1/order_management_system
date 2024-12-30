@@ -45,13 +45,12 @@ public class CustomerRepository {
      * @param customer содержит данные о покупателе
      * @return возвращает покупателя
      */
-    public Customer saveCustomer(Customer customer) {
+    public Customer save(Customer customer) {
 
         customer.setId(++id);
 
         try {
-            //Files.write(filePath, customer.toString().getBytes(), StandardOpenOption.APPEND);
-            Files.write(filePath, (customer.toString() + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+            Files.write(filePath, (customer + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
             Files.write(filePathId, id.toString().getBytes());
         } catch (IOException e) {
             throw new CustomerNotAddException("Не удалось добавить покупателя!");
@@ -64,7 +63,7 @@ public class CustomerRepository {
      *
      * @return возвращает список всех покупателей
      */
-    public List<Customer> findAllCustomers() {
+    public List<Customer> findAll() {
 
         try {
             return Files.readAllLines(filePath)
@@ -82,7 +81,7 @@ public class CustomerRepository {
      * @param id принимает в себя ID покупателя
      * @return возвращает покупателя с заданным ID
      */
-    public Customer findCustomer(int id) {
+    public Customer find(int id) {
 
         try (Stream<String> lines = Files.lines(filePath)) {
             return lines.map(Customer::new)

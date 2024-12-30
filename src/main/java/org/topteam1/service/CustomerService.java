@@ -22,7 +22,7 @@ public class CustomerService {
      */
     public Customer addCustomer(String name, String customerType) {
         Customer newCustomer = new Customer(name, customerType);
-        return customerRepository.saveCustomer(newCustomer);
+        return customerRepository.save(newCustomer);
     }
 
     /**
@@ -31,7 +31,7 @@ public class CustomerService {
      * @return возвращает список покупателей
      */
     public List<Customer> getCustomer() {
-        return customerRepository.findAllCustomers();
+        return customerRepository.findAll();
     }
 
     /**
@@ -41,6 +41,6 @@ public class CustomerService {
      * @return возвращает покупателя с заданным ID
      */
     public Customer getCustomerForId(Integer id) {
-        return customerRepository.findCustomer(id);
+        return customerRepository.find(id);
     }
 }
