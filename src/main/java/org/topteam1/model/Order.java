@@ -62,14 +62,14 @@ public class Order {
 
     @Override
     public String toString() {
-        return id + "/" + customer + "/" + product + "/" + orderStatus.getRus();
+        return id + "/" + customer + "/" + product + "/" + orderStatus;
     }
 
     public Order(String orderFromFile) {
         String[] parts = orderFromFile.split("/");
         this.id = Long.parseLong(parts[0]);
-        this.customer = new Customer(parts[1]);//  findCustomerForID
-        this.product = new Product(parts[2]);// findProductForID
+        this.customer = new Customer(parts[1]);
+        this.product = new Product(parts[2]);
         this.orderStatus = OrderStatus.valueOf(parts[3]);
     }
 }

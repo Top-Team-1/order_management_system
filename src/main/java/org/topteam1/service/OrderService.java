@@ -42,7 +42,7 @@ public class OrderService {
      * @return Заказ из репозитория по ID
      */
     public Order getOrder(int id) {
-        return orderRepository.findOrder(id);
+        return orderRepository.find(id);
     }
 
     /**
@@ -53,7 +53,7 @@ public class OrderService {
      * @return Метод возвращает обновленный статус заказа
      */
     public Order updateOrderStatus(int id, int status) {
-        Order order = orderRepository.findOrder(id);
+        Order order = orderRepository.find(id);
         OrderStatus orderStatus = OrderStatus.getOrderStatus(status);
         order.setOrderStatus(orderStatus);
         return orderRepository.saveNewOrderStatus(order);
@@ -65,7 +65,7 @@ public class OrderService {
      * @return Возвращает список заказов.
      */
     public List<Order> getAllOrders() {
-        return orderRepository.findAllOrder();
+        return orderRepository.findAll();
     }
 
 }

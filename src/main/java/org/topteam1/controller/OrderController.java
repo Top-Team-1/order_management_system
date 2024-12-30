@@ -5,7 +5,6 @@ import org.topteam1.Exceptions.OrderNotAddException;
 import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.model.Customer;
-import org.topteam1.model.Order;
 import org.topteam1.model.OrderStatus;
 import org.topteam1.model.Product;
 import org.topteam1.repository.CustomerRepository;
@@ -60,20 +59,20 @@ public class OrderController {
      */
     public void createOrder() {
         System.out.println("Выберите покупателя");
-        System.out.println(customerRepository.findAllCustomers());
+        System.out.println(customerRepository.findAll());
 
         int choiceCustomer = scanner.nextInt();
         try {
-            customer = customerRepository.findCustomer(choiceCustomer);
+            customer = customerRepository.find(choiceCustomer);
 
             scanner.nextLine();
 
             System.out.println("Выберите товар");
-            System.out.println(productRepository.findAllProduct());
+            System.out.println(productRepository.findAll());
 
             int choiceProduct = scanner.nextInt();
 
-            product = productRepository.findProduct(choiceProduct);
+            product = productRepository.find(choiceProduct);
             scanner.nextLine();
 
             String info = orderService.addOrder(customer, product).toString();

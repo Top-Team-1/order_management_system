@@ -59,7 +59,7 @@ public class OrderRepository {
      * @param id В качестве параметра принимает ID заказа.
      * @return Возвращает заказ найденный по ID.
      */
-    public Order findOrder(int id) {
+    public Order find(int id) {
         try (Stream<String> lines = Files.lines(filePath)) {
             return lines.map(Order::new)
                     .filter(o -> o.getId() == id)
@@ -74,7 +74,7 @@ public class OrderRepository {
      *
      * @return Список заказов
      */
-    public List<Order> findAllOrder() {
+    public List<Order> findAll() {
         try {
             return Files.readAllLines(filePath).stream()
                     .map(Order::new)
