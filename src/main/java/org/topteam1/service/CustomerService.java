@@ -1,6 +1,7 @@
 package org.topteam1.service;
 
 import org.topteam1.model.Customer;
+import org.topteam1.model.CustomerType;
 import org.topteam1.repository.CustomerRepository;
 
 import java.util.List;
@@ -16,12 +17,11 @@ public class CustomerService {
     /**
      * Метод добавляет нового покупателя в систему
      *
-     * @param name         хранит имя покупателя
-     * @param customerType хранит тип покупателя
+     * @param name хранит имя покупателя
      * @return возвращает покупателя
      */
-    public Customer addCustomer(String name, String customerType) {
-        Customer newCustomer = new Customer(name, customerType);
+    public Customer addCustomer(String name) {
+        Customer newCustomer = new Customer(null, name);
         return customerRepository.save(newCustomer);
     }
 
@@ -42,5 +42,16 @@ public class CustomerService {
      */
     public Customer getCustomerForId(Integer id) {
         return customerRepository.find(id);
+    }
+
+
+    public Customer checkCustomerType(Customer customer) {
+        customer.setCountOrder(customer.getCountOrder() + 1);
+        if (customer.getCountOrder() >= 4) {
+            customer.setCustomerType(CustomerType.VIP);
+        } else if (customer.getCountOrder() > 1 || customer.getCountOrder() < 4) {
+            customer.setCustomerType(CustomerType.REGULAR);
+        }
+        return customerRepository.save(customer);
     }
 }

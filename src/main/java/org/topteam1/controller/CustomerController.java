@@ -3,7 +3,6 @@ package org.topteam1.controller;
 import org.topteam1.Exceptions.CustomerFileNotFoundException;
 import org.topteam1.Exceptions.CustomerNotAddException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
-import org.topteam1.model.CustomerType;
 import org.topteam1.service.CustomerService;
 
 import java.util.Scanner;
@@ -45,20 +44,14 @@ public class CustomerController {
     }
 
     /**
-     * Метод для работы с покупателем, добавлением его в список и присваиванием ему статуса
+     * Метод для работы с покупателем и добавлением его в список
      */
     private void addCustomer() {
-        int customerCategory;
+
         System.out.println("Введите Ваше имя: ");
         String customerName = sc.nextLine();
-        System.out.println("Выберите тип покупателя:\n" +
-                "1)" + CustomerType.NEW.getRus() + "\n" +
-                "2)" + CustomerType.REGULAR.getRus() + "\n" +
-                "3)" + CustomerType.VIP.getRus());
-        customerCategory = sc.nextInt();
         try {
-            String customerType = String.valueOf(CustomerType.getCustomerByType(customerCategory).getRus());
-            String info = customerService.addCustomer(customerName, customerType).toString();
+            String info = customerService.addCustomer(customerName).toString();
             System.out.println(info);
         } catch (CustomerNotAddException e) {
             System.out.println(e.getMessage());
@@ -89,6 +82,14 @@ public class CustomerController {
         try {
             String info = customerService.getCustomerForId(findId).toString();
             System.out.println(info);
+        } catch (CustomerNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void changeCustomerType() {
+        try {
+
         } catch (CustomerNotFoundException e) {
             System.out.println(e.getMessage());
         }

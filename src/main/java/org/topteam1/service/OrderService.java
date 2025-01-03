@@ -11,13 +11,16 @@ import org.topteam1.repository.ProductRepository;
 import java.util.List;
 
 public class OrderService {
+
+    private final CustomerService customerService;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
 
 
-    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
+    public OrderService(CustomerService customerService, OrderRepository orderRepository, CustomerRepository customerRepository,
                         ProductRepository productRepository) {
+        this.customerService = customerService;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
@@ -31,7 +34,9 @@ public class OrderService {
      * @return Возвращает созданный заказ.
      */
     public Order addOrder(Customer customer, Product product) {
-        Order newOrder = new Order(null, customer, product);
+        Customer newCustomer = customerRepository.find(customer.getId());
+        newCustomer = customerService.checkCustomerType(newCustomer);
+        Order newOrder = new Order(null, newCustomer, product);
         return orderRepository.save(newOrder);
     }
 
