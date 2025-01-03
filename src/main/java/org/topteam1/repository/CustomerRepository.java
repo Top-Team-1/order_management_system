@@ -1,7 +1,6 @@
 package org.topteam1.repository;
 
 import org.topteam1.Exceptions.CustomerFileNotFoundException;
-import org.topteam1.Exceptions.CustomerNotAddException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.model.Customer;
 
@@ -47,13 +46,26 @@ public class CustomerRepository {
      */
     public Customer save(Customer customer) {
 
-        customer.setId(++id);
-
         try {
-            Files.write(filePath, (customer + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
-            Files.write(filePathId, id.toString().getBytes());
+            List<String> customers = Files.readAllLines(filePath);
+            if (customer.getId() == null) {
+                customer.setId(++id);
+                Files.write(filePath, (customer + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+                Files.write(filePathId, id.toString().getBytes());
+            } else {
+                List<String> updateCustomerStatus = customers.stream()
+                        .map(c -> {
+                            Customer newCustomer = new Customer(c);
+                            if (newCustomer.getId().equals(customer.getId())) {
+                                return customer.toString();
+                            }
+                            return c;
+                        })
+                        .toList();
+                Files.write(filePath, updateCustomerStatus);
+            }
         } catch (IOException e) {
-            throw new CustomerNotAddException("Не удалось добавить покупателя!");
+            System.out.println(e.getMessage());
         }
         return customer;
     }
@@ -81,7 +93,7 @@ public class CustomerRepository {
      * @param id принимает в себя ID покупателя
      * @return возвращает покупателя с заданным ID
      */
-    public Customer find(int id) {
+    public Customer find(long id) {
 
         try (Stream<String> lines = Files.lines(filePath)) {
             return lines.map(Customer::new)

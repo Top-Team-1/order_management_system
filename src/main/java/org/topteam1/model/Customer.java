@@ -6,16 +6,17 @@ public class Customer {
 
     private Long id;
     private String name;
-    private String customerType;
+    private CustomerType customerType;
+    private Integer countOrder;
 
-    public Customer(String name, String customerType) {
-        this.id = null;
+
+    public Customer(Long id, String name) {
+        this.id = id;
         this.name = name;
-        this.customerType = customerType;
+        this.customerType = CustomerType.NEW;
+        this.countOrder = 0;
     }
 
-    public Customer() {
-    }
 
     public Long getId() {
         return id;
@@ -33,12 +34,20 @@ public class Customer {
         this.name = name;
     }
 
-    public String getCustomerType() {
+    public CustomerType getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(String customerType) {
+    public void setCustomerType(CustomerType customerType) {
         this.customerType = customerType;
+    }
+
+    public Integer getCountOrder() {
+        return countOrder;
+    }
+
+    public void setCountOrder(Integer countOrder) {
+        this.countOrder = countOrder;
     }
 
     @Override
@@ -56,13 +65,14 @@ public class Customer {
 
     @Override
     public String toString() {
-        return  id + "," + name + "," + customerType;
+        return  id + "," + name + "," + customerType + "," + countOrder;
     }
 
     public Customer(String customerFromFile) {
         String[] parts = customerFromFile.split(",");
         this.id = Long.parseLong(parts[0]);
         this.name = parts[1];
-        this.customerType = parts[2];
+        this.customerType = CustomerType.valueOf(parts[2]);
+        this.countOrder = Integer.parseInt(parts[3]);
     }
 }
