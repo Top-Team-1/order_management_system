@@ -1,6 +1,7 @@
 package org.topteam1.repository;
 
 import org.topteam1.Exceptions.OrderNotFoundException;
+import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
 
 import java.io.IOException;
@@ -43,10 +44,24 @@ public class OrderRepository {
      * @return Сохранённый заказ
      */
     public Order save(Order order) {
-        order.setId(++id);
         try {
-            Files.write(filePath, (order + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
-            Files.write(filePathId, id.toString().getBytes());
+            List<String> orders = Files.readAllLines(filePath);
+            if (order.getId() == null) {
+                order.setId(++id);
+                Files.write(filePath, (order + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+                Files.write(filePathId, id.toString().getBytes());
+            } else {
+                List<String> updateOrderstatus = orders.stream()
+                        .map(o -> {
+                            Order newOrder = new Order(o);
+                            if (newOrder.getId().equals(order.getId())) {
+                                return order.toString();
+                            }
+                            return o;
+                        })
+                        .toList();
+                Files.write(filePath, updateOrderstatus);
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
