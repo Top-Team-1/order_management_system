@@ -61,7 +61,7 @@ public class OrderService {
         Order order = orderRepository.find(id);
         OrderStatus orderStatus = OrderStatus.getOrderStatus(status);
         order.setOrderStatus(orderStatus);
-        return orderRepository.saveNewOrderStatus(order);
+        return orderRepository.save(order);
     }
 
     /**
