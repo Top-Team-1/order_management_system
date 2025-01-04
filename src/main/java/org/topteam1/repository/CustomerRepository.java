@@ -1,5 +1,7 @@
 package org.topteam1.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.topteam1.Exceptions.CustomerFileNotFoundException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.model.Customer;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class CustomerRepository {
+    private static final Logger log = LoggerFactory.getLogger(CustomerRepository.class);
 
     private final Path filePath;
     private final Path filePathId;
@@ -45,6 +48,7 @@ public class CustomerRepository {
      * @return возвращает покупателя
      */
     public Customer save(Customer customer) {
+        log.info("Сохраняется покупатель: {}", customer);
 
         try {
             List<String> customers = Files.readAllLines(filePath);
@@ -52,6 +56,7 @@ public class CustomerRepository {
                 customer.setId(++id);
                 Files.write(filePath, (customer + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
                 Files.write(filePathId, id.toString().getBytes());
+                log.info("Покупатель сохранен: {}", customer);
             } else {
                 List<String> updateCustomerStatus = customers.stream()
                         .map(c -> {
@@ -65,6 +70,7 @@ public class CustomerRepository {
                 Files.write(filePath, updateCustomerStatus);
             }
         } catch (IOException e) {
+            log.error("Ошибка сохранения покупателя: ", e);
             System.out.println(e.getMessage());
         }
         return customer;
@@ -77,12 +83,15 @@ public class CustomerRepository {
      */
     public List<Customer> findAll() {
 
+        log.info("Получение покупателей из файла: {}", filePath);
+
         try {
             return Files.readAllLines(filePath)
                     .stream()
                     .map(Customer::new)
                     .toList();
         } catch (IOException e) {
+            log.error("Ошибка получения покупателей из файла ", e);
             throw new CustomerFileNotFoundException("Файл записи не найден!");
         }
     }
@@ -95,12 +104,15 @@ public class CustomerRepository {
      */
     public Customer find(long id) {
 
+        log.info("Поиск покупателя по id: {}", id);
+
         try (Stream<String> lines = Files.lines(filePath)) {
             return lines.map(Customer::new)
                     .filter(c -> c.getId() == id)
                     .findFirst()
                     .orElseThrow(() -> new CustomerNotFoundException("Покупатель с ID " + id + " не найден!"));
         } catch (IOException e) {
+            log.error("Ошибка получения покупателя из файла: ", e);
             throw new CustomerFileNotFoundException("Файл записи не найден!");
         }
     }
