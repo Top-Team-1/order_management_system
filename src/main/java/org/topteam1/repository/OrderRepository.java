@@ -1,5 +1,7 @@
 package org.topteam1.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
@@ -13,6 +15,7 @@ import java.util.stream.Stream;
 
 public class OrderRepository {
 
+    private static final Logger log = LoggerFactory.getLogger(OrderRepository.class);
     private final Path filePath;
     private final Path filePathId;
     private Long id;
@@ -44,12 +47,14 @@ public class OrderRepository {
      * @return Сохранённый заказ
      */
     public Order save(Order order) {
+        log.info("Сохранение нового заказа");
         try {
             List<String> orders = Files.readAllLines(filePath);
             if (order.getId() == null) {
                 order.setId(++id);
                 Files.write(filePath, (order + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
                 Files.write(filePathId, id.toString().getBytes());
+                log.info("Заказ с ID {} успешно сохранен: {}", order.getId(), order);
             } else {
                 List<String> updateOrderstatus = orders.stream()
                         .map(o -> {
@@ -63,6 +68,7 @@ public class OrderRepository {
                 Files.write(filePath, updateOrderstatus);
             }
         } catch (IOException e) {
+            log.error("Ошибка при сохранении заказа: {}", e.getMessage());
             System.out.println(e.getMessage());
         }
         return order;
@@ -75,11 +81,13 @@ public class OrderRepository {
      * @return Возвращает заказ найденный по ID.
      */
     public Order find(int id) {
+        log.info("Поиск заказа с ID {}", id);
         try (Stream<String> lines = Files.lines(filePath)) {
             return lines.map(Order::new)
                     .filter(o -> o.getId() == id)
                     .findFirst().orElseThrow(() -> new OrderNotFoundException("Заказ с ID " + id + " не найден!"));
         } catch (IOException e) {
+            log.error("Ошибка при поиске заказа: {}", e.getMessage());
             throw new OrderNotFoundException(e.getMessage()); // заглушка
         }
     }
@@ -90,6 +98,7 @@ public class OrderRepository {
      * @return Список заказов
      */
     public List<Order> findAll() {
+        log.info("Получение всех заказов из файла {}", filePath);
         try {
             return Files.readAllLines(filePath).stream()
                     .map(Order::new)
@@ -97,30 +106,5 @@ public class OrderRepository {
         } catch (IOException e) {
             throw new OrderNotFoundException(e.getMessage()); // заглушка. поменять
         }
-    }
-
-    /**
-     * Метод сохранения статуса заказа
-     *
-     * @param order Заказ
-     * @return Возвращает заказ с обновленным статусом
-     */
-    public Order saveNewOrderStatus(Order order) {
-        try {
-            List<String> allOrders = Files.readAllLines(filePath);
-            List<String> updateStatus = allOrders.stream()
-                    .map(o -> {
-                        Order orderWithNewStatus = new Order(o);
-                        if (orderWithNewStatus.getId().equals(order.getId())) {
-                            return order.toString();
-                        }
-                        return o;
-                    })
-                    .toList();
-            Files.write(filePath, updateStatus);
-        } catch (IOException e) {
-            System.out.println(e.getMessage()); //заглушка
-        }
-        return order;
     }
 }
