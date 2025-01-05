@@ -1,5 +1,7 @@
 package org.topteam1.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.topteam1.model.Customer;
 import org.topteam1.model.CustomerType;
 import org.topteam1.repository.CustomerRepository;
@@ -7,6 +9,8 @@ import org.topteam1.repository.CustomerRepository;
 import java.util.List;
 
 public class CustomerService {
+
+    private static final Logger log = LoggerFactory.getLogger(CustomerService.class);
 
     private final CustomerRepository customerRepository;
 
@@ -21,7 +25,9 @@ public class CustomerService {
      * @return возвращает покупателя
      */
     public Customer addCustomer(String name) {
+        log.info("Попытка добавить покупателя: name={}", name);
         Customer newCustomer = new Customer(null, name);
+        log.info("Покупатель успешно добавлен: {}", newCustomer.getName());
         return customerRepository.save(newCustomer);
     }
 
@@ -31,6 +37,7 @@ public class CustomerService {
      * @return возвращает список покупателей
      */
     public List<Customer> getCustomer() {
+        log.info("Поиск всех покупателей");
         return customerRepository.findAll();
     }
 
@@ -41,6 +48,7 @@ public class CustomerService {
      * @return возвращает покупателя с заданным ID
      */
     public Customer getCustomerForId(Integer id) {
+        log.info("Идет поиск покупателя по id: {}", id);
         return customerRepository.find(id);
     }
 

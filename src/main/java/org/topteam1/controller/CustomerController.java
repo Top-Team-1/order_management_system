@@ -1,5 +1,7 @@
 package org.topteam1.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.topteam1.Exceptions.CustomerFileNotFoundException;
 import org.topteam1.Exceptions.CustomerNotAddException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
@@ -8,6 +10,8 @@ import org.topteam1.service.CustomerService;
 import java.util.Scanner;
 
 public class CustomerController {
+
+    private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
     private final CustomerService customerService;
 
@@ -21,6 +25,7 @@ public class CustomerController {
      * Метод запускает взаимодействие с покупателем
      */
     public void start() {
+        log.info("Запущена работа с покупателем");
         while (true) {
             int choice;
             System.out.println("""
@@ -31,11 +36,13 @@ public class CustomerController {
                     0) Назад""");
             choice = sc.nextInt();
             sc.nextLine();
+            log.info("Пользователь выбрал пункт меню: {}", choice);
             switch (choice) {
                 case 1 -> addCustomer();
                 case 2 -> getCustomerList();
                 case 3 -> findCustomerId();
                 case 0 -> {
+                    log.info("Завершение работы с покупателем");
                     return;
                 }
                 default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
@@ -48,12 +55,16 @@ public class CustomerController {
      */
     private void addCustomer() {
 
+        log.info("Добавление покупателя");
+
         System.out.println("Введите Ваше имя: ");
         String customerName = sc.nextLine();
         try {
             String info = customerService.addCustomer(customerName).toString();
+            log.info("Пользователь ввел: name={}", customerName);
             System.out.println(info);
         } catch (CustomerNotAddException e) {
+            log.error("Ошибка при добавлении покупателя");
             System.out.println(e.getMessage());
         }
     }
@@ -62,6 +73,8 @@ public class CustomerController {
      * Метод отображает всех покупателей
      */
     private void getCustomerList() {
+
+        log.info("Получение всех покупателей");
 
         try {
             String info = customerService.getCustomer().toString();
@@ -76,6 +89,7 @@ public class CustomerController {
      */
     private void findCustomerId() {
         int findId;
+        log.info("Поиск покупателя по id");
         System.out.println("Введите ID покупателя для поиска");
         findId = sc.nextInt();
         sc.nextLine();
@@ -83,14 +97,7 @@ public class CustomerController {
             String info = customerService.getCustomerForId(findId).toString();
             System.out.println(info);
         } catch (CustomerNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void changeCustomerType() {
-        try {
-
-        } catch (CustomerNotFoundException e) {
+            log.warn("Ошибка поиска покупателя по id");
             System.out.println(e.getMessage());
         }
     }
