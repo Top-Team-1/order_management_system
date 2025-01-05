@@ -1,6 +1,8 @@
 package org.topteam1.model;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum OrderStatus {
     NEW("Новый заказ"),
@@ -22,5 +24,13 @@ public enum OrderStatus {
                 .filter(s -> s.ordinal() == choice)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Такого статуса нет"));
+    }
+
+    public static OrderStatus getEnumValue(String rusValue){
+        Map<String, OrderStatus> types = new HashMap<>();
+        for (OrderStatus el : OrderStatus.values()){
+            types.put(el.getRus(), el);
+        }
+        return types.get(rusValue);
     }
 }

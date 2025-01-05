@@ -9,9 +9,9 @@ public class Product {
     private Long id;
     private String name;
     private Integer price;
-    private String category;
+    private ProductCategory category;
 
-    public Product(String name, Integer price, String category) {
+    public Product(String name, Integer price, ProductCategory category) {
         this.id = null;
         this.name = name;
         this.price = price;
@@ -42,11 +42,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 
@@ -65,7 +65,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return id + "," + name + "," + price + "," + category;
+        return id + "," + name + "," + price + "," + category.getRus();
     }
 
     public Product(String productFromFile) {
@@ -73,6 +73,6 @@ public class Product {
         this.id = Long.parseLong(parts[0]);
         this.name = parts[1];
         this.price = Integer.parseInt(parts[2]);
-        this.category = parts[3];
+        this.category = ProductCategory.getEnumValue(parts[3]);
     }
 }

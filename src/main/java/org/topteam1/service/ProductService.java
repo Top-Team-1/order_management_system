@@ -6,6 +6,7 @@ package org.topteam1.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.topteam1.model.Product;
+import org.topteam1.model.ProductCategory;
 import org.topteam1.repository.ProductRepository;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class ProductService {
      * @param category Категория товара.
      * @return Возвращает созданный объект.
      */
-    public Product addProduct(String name, Integer price, String category) {
+    public Product addProduct(String name, Integer price, ProductCategory category) {
         log.info("Попытка добавить товар: name={}, price={}, category={}", name, price, category);
         Product newProduct = new Product(name, price, category);
         log.info("Товар успешно добавлен: {}", newProduct.getName() + " " + newProduct.getPrice() + " " + newProduct.getCategory());

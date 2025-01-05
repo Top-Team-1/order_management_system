@@ -62,7 +62,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return id + "/" + customer + "/" + product + "/" + orderStatus;
+        return id + "/" + customer + "/" + product + "/" + orderStatus.getRus();
     }
 
     public Order(String orderFromFile) {
@@ -70,6 +70,6 @@ public class Order {
         this.id = Long.parseLong(parts[0]);
         this.customer = new Customer(parts[1]);
         this.product = new Product(parts[2]);
-        this.orderStatus = OrderStatus.valueOf(parts[3]);
+        this.orderStatus = OrderStatus.getEnumValue(parts[3]);
     }
 }
