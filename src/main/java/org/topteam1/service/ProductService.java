@@ -3,12 +3,15 @@
  */
 package org.topteam1.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.topteam1.model.Product;
 import org.topteam1.repository.ProductRepository;
 
 import java.util.List;
 
 public class ProductService {
+    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
 
@@ -25,7 +28,9 @@ public class ProductService {
      * @return Возвращает созданный объект.
      */
     public Product addProduct(String name, Integer price, String category) {
+        log.info("Попытка добавить товар: name={}, price={}, category={}", name, price, category);
         Product newProduct = new Product(name, price, category);
+        log.info("Товар успешно добавлен: {}", newProduct.getName() + " " + newProduct.getPrice() + " " + newProduct.getCategory());
         return productRepository.save(newProduct);
     }
 
@@ -35,6 +40,7 @@ public class ProductService {
      * @return список товаров.
      */
     public List<Product> getAll() {
+        log.info("Поиск всех товаров");
         return productRepository.findAll();
     }
 
@@ -45,6 +51,7 @@ public class ProductService {
      * @return возвращает товар по id.
      */
     public Product getProduct(int id) {
+        log.info("Идёт поиск товара по id: {}", id);
         return productRepository.find(id);
     }
 }
