@@ -71,9 +71,9 @@ public class ProductController {
                 "3)" + ProductCategory.HOUSEHOLD_APPLIANCES.getRus());
         categoryNumber = sc.nextInt();
         try {
-            String productCategory = String.valueOf(ProductCategory.getProductByNumber(categoryNumber).getRus());
-            log.info("Пользователь ввёл: name={}, price={}, category={}", productName, productPrice, productCategory);
-            String info = productService.addProduct(productName, productPrice, productCategory).toString();
+//            String productCategory = String.valueOf(ProductCategory.getProductByNumber(categoryNumber).getRus());
+            log.info("Пользователь ввёл: name={}, price={}, category={}", productName, productPrice, ProductCategory.getProductByNumber(categoryNumber));
+            String info = productService.addProduct(productName, productPrice, ProductCategory.getProductByNumber(categoryNumber)).toString();
             System.out.println(info);
         } catch (IllegalArgumentException | ProductNotAddException e) {
             log.error("Ошибка при добавлении товара");

@@ -1,6 +1,8 @@
 package org.topteam1.model;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum ProductCategory {
     /**
@@ -24,5 +26,13 @@ public enum ProductCategory {
                 .filter(c -> c.ordinal() + 1 == choice)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Такой категории нет"));
+    }
+
+    public static ProductCategory getEnumValue(String rusValue){
+        Map<String, ProductCategory> types = new HashMap<>();
+        for (ProductCategory el : ProductCategory.values()){
+            types.put(el.getRus(), el);
+        }
+        return types.get(rusValue);
     }
 }

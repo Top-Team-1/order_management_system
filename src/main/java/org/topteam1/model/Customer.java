@@ -65,14 +65,14 @@ public class Customer {
 
     @Override
     public String toString() {
-        return  id + "," + name + "," + customerType + "," + countOrder;
+        return  id + "," + name + "," + customerType.getRus() + "," + countOrder;
     }
 
     public Customer(String customerFromFile) {
         String[] parts = customerFromFile.split(",");
         this.id = Long.parseLong(parts[0]);
         this.name = parts[1];
-        this.customerType = CustomerType.valueOf(parts[2]);
+        this.customerType = CustomerType.getEnumValue(parts[2]);
         this.countOrder = Integer.parseInt(parts[3]);
     }
 }
