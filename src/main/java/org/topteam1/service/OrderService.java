@@ -15,14 +15,17 @@ import java.util.List;
 public class OrderService {
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
     private final CustomerService customerService;
+    private final ProductService productService;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
 
 
-    public OrderService(CustomerService customerService, OrderRepository orderRepository, CustomerRepository customerRepository,
+    public OrderService(CustomerService customerService, ProductService productService,
+                        OrderRepository orderRepository, CustomerRepository customerRepository,
                         ProductRepository productRepository) {
         this.customerService = customerService;
+        this.productService = productService;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
@@ -37,11 +40,10 @@ public class OrderService {
      */
     public Order addOrder(Customer customer, Product product) {
         log.info("Добавление нового заказа. Покупатель ID: {}, Товар ID: {}", customer.getId(), product.getId());
-        Customer newCustomer = customerRepository.find(customer.getId());
-        newCustomer = customerService.checkCustomerType(newCustomer);
-        Order newOrder = new Order(null, newCustomer, product);
+        productService.calculateDiscount(product, customer);
+        customer = customerService.checkCustomerType(customerRepository.find(customer.getId()));
         log.info("Заказ успешно создан");
-        return orderRepository.save(newOrder);
+        return orderRepository.save(new Order(null, customer, product));
     }
 
     /**
@@ -66,8 +68,13 @@ public class OrderService {
         log.info("Обновление статуса заказа. ID заказа: {}, Новый статус: {}", id, status);
         Order order = orderRepository.find(id);
         log.info("Текущий заказ перед обновлением статуса: {}", order);
-        OrderStatus orderStatus = OrderStatus.getOrderStatus(status);
-        order.setOrderStatus(orderStatus);
+
+        if (order.getOrderStatus() == OrderStatus.COMPLETED || order.getOrderStatus() == OrderStatus.CANCELED) {
+            log.warn("Попытка изменить статус, недоступный для изменения");
+            return order;
+        }
+
+        order.setOrderStatus(OrderStatus.getOrderStatus(status));
         log.info("Статус заказа успешно обновлен");
         return orderRepository.save(order);
     }

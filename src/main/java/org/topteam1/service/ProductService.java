@@ -5,8 +5,7 @@ package org.topteam1.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.topteam1.model.Product;
-import org.topteam1.model.ProductCategory;
+import org.topteam1.model.*;
 import org.topteam1.repository.ProductRepository;
 
 import java.util.List;
@@ -54,5 +53,18 @@ public class ProductService {
     public Product getProduct(int id) {
         log.info("Идёт поиск товара по id: {}", id);
         return productRepository.find(id);
+    }
+
+    /**
+     * Метод для расчёта скидки покупателя, в зависимости от его статуса.
+     * @param product Товар
+     * @param customer Покупатель
+     */
+    public void calculateDiscount(Product product, Customer customer) {
+        if (customer.getCustomerType() == CustomerType.VIP){
+            product.setPrice(product.getPrice() - (product.getPrice()) * Discount.VIP.getDiscount() / 100);
+        }else if(customer.getCustomerType() == CustomerType.REGULAR){
+            product.setPrice(product.getPrice() - (product.getPrice()) * Discount.REGULAR.getDiscount() / 100);
+        }
     }
 }

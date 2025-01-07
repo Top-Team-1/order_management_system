@@ -28,6 +28,12 @@ public enum ProductCategory {
                 .orElseThrow(() -> new IllegalArgumentException("Такой категории нет"));
     }
 
+    /**
+     * Метод определяет корректное значение Enum
+     *
+     * @param rusValue Русское название
+     * @return корректное значение Enum
+     */
     public static ProductCategory getEnumValue(String rusValue){
         Map<String, ProductCategory> types = new HashMap<>();
         for (ProductCategory el : ProductCategory.values()){
