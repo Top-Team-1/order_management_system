@@ -26,9 +26,16 @@ public enum OrderStatus {
                 .orElseThrow(() -> new IllegalArgumentException("Такого статуса нет"));
     }
 
-    public static OrderStatus getEnumValue(String rusValue){
+    /**
+     * Метод определяет корректное значение Enum
+     *
+     * @param rusValue Русское название
+     * @return корректное значение Enum
+     */
+
+    public static OrderStatus getEnumValue(String rusValue) {
         Map<String, OrderStatus> types = new HashMap<>();
-        for (OrderStatus el : OrderStatus.values()){
+        for (OrderStatus el : OrderStatus.values()) {
             types.put(el.getRus(), el);
         }
         return types.get(rusValue);

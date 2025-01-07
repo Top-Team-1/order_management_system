@@ -18,9 +18,15 @@ public enum CustomerType {
         return rus;
     }
 
-    public static CustomerType getEnumValue(String rusValue){
+    /**
+     * Метод определяет корректное значение Enum
+     *
+     * @param rusValue Русское название
+     * @return корректное значение Enum
+     */
+    public static CustomerType getEnumValue(String rusValue) {
         Map<String, CustomerType> types = new HashMap<>();
-        for(CustomerType el : CustomerType.values()){
+        for (CustomerType el : CustomerType.values()) {
             types.put(el.getRus(), el);
         }
         return types.get(rusValue);
