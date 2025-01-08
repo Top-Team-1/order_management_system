@@ -75,36 +75,18 @@ public class OrderRepository {
     }
 
     /**
-     * Метод для поиска заказа по ID
-     *
-     * @param id В качестве параметра принимает ID заказа.
-     * @return Возвращает заказ найденный по ID.
-     */
-    public Order find(int id) {
-        log.info("Поиск заказа с ID {}", id);
-        try (Stream<String> lines = Files.lines(filePath)) {
-            return lines.map(Order::new)
-                    .filter(o -> o.getId() == id)
-                    .findFirst().orElseThrow(() -> new OrderNotFoundException("Заказ с ID " + id + " не найден!"));
-        } catch (IOException e) {
-            log.error("Ошибка при поиске заказа: {}", e.getMessage());
-            throw new OrderNotFoundException(e.getMessage()); // заглушка
-        }
-    }
-
-    /**
      * Метод поиска списка заказов
      *
      * @return Список заказов
      */
-    public List<Order> findAll() {
+    public List<String> findAll() {
         log.info("Получение всех заказов из файла {}", filePath);
         try {
             return Files.readAllLines(filePath).stream()
-                    .map(Order::new)
                     .toList();
         } catch (IOException e) {
-            throw new OrderNotFoundException(e.getMessage()); // заглушка. поменять
+            System.out.println(e.getMessage()); // заглушка. поменять
         }
+        return List.of();
     }
 }

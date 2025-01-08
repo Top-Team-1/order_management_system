@@ -2,6 +2,7 @@ package org.topteam1.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
 import org.topteam1.model.OrderStatus;
@@ -52,9 +53,12 @@ public class OrderService {
      * @param id ID Заказа
      * @return Заказ из репозитория по ID
      */
-    public Order getOrder(int id) {
+    public Order getOrderById(int id) {
         log.info("Получение заказа с ID {}", id);
-        return orderRepository.find(id);
+        return getAllOrders().stream()
+                .filter(o -> o.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new OrderNotFoundException("Заказ с ID " + id + " не найден!"));
     }
 
     /**
@@ -66,7 +70,7 @@ public class OrderService {
      */
     public Order updateOrderStatus(int id, int status) {
         log.info("Обновление статуса заказа. ID заказа: {}, Новый статус: {}", id, status);
-        Order order = orderRepository.find(id);
+        Order order = getOrderById(id);
         log.info("Текущий заказ перед обновлением статуса: {}", order);
 
         if (order.getOrderStatus() == OrderStatus.COMPLETED || order.getOrderStatus() == OrderStatus.CANCELED) {
@@ -86,8 +90,9 @@ public class OrderService {
      */
     public List<Order> getAllOrders() {
         log.info("Получение списка всех заказов");
-        return orderRepository.findAll();
+        return orderRepository.findAll().stream()
+                .map(Order::new)
+                .toList();
     }
-
 }
 
