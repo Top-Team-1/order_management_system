@@ -41,7 +41,7 @@ public class OrderService {
     public Order addOrder(Customer customer, Product product) {
         log.info("Добавление нового заказа. Покупатель ID: {}, Товар ID: {}", customer.getId(), product.getId());
         productService.calculateDiscount(product, customer);
-        customer = customerService.checkCustomerType(customerRepository.find(customer.getId()));
+        customer = customerService.checkCustomerType(customerService.getCustomerById(customer.getId()));
         log.info("Заказ успешно создан");
         return orderRepository.save(new Order(null, customer, product));
     }

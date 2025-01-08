@@ -70,34 +70,16 @@ public class ProductRepository {
      *
      * @return список товаров.
      */
-    public List<Product> findAll() {
+    public List<String> findAll() {
         log.info("Получение товаров из файла: {}", filePath);
         try {
             return Files.readAllLines(filePath).stream()
-                    .map(Product::new)
                     .toList();
         } catch (IOException e) {
             log.error("Ошибка получения товаров из файла: ", e);
-            throw new ProductFileNotFoundException("Файл записи не найден!");
+            System.out.println(e.getMessage());
         }
+        return List.of();
     }
 
-    /**
-     * Метод возвращает товар по ID.
-     *
-     * @param id id товара.
-     * @return найденный товар.
-     */
-    public Product find(int id) {
-        log.info("Поиск товара по id: {}", id);
-        try (Stream<String> lines = Files.lines(filePath)) {
-            return lines.map(Product::new)
-                    .filter(p -> p.getId() == id)
-                    .findFirst()
-                    .orElseThrow(() -> new ProductNotFoundException(id));
-        } catch (IOException e) {
-            log.error("Ошибка получения товара из файла: ", e);
-            throw new ProductFileNotFoundException("Файл записи не найден!");
-        }
-    }
 }

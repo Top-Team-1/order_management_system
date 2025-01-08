@@ -11,7 +11,9 @@ import org.topteam1.model.OrderStatus;
 import org.topteam1.model.Product;
 import org.topteam1.repository.CustomerRepository;
 import org.topteam1.repository.ProductRepository;
+import org.topteam1.service.CustomerService;
 import org.topteam1.service.OrderService;
+import org.topteam1.service.ProductService;
 
 import java.util.Scanner;
 
@@ -23,11 +25,16 @@ public class OrderController {
     Scanner scanner = new Scanner(System.in);
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
+    private final ProductService productService;
+    private final CustomerService customerService;
 
-    public OrderController(OrderService orderService, ProductRepository productRepository, CustomerRepository customerRepository) {
+    public OrderController(OrderService orderService, ProductService productService, CustomerService customerService,
+                           ProductRepository productRepository, CustomerRepository customerRepository) {
         this.orderService = orderService;
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
+        this.productService = productService;
+        this.customerService = customerService;
     }
 
     /**
@@ -70,7 +77,7 @@ public class OrderController {
 
         int choiceCustomer = scanner.nextInt();
         try {
-            customer = customerRepository.find(choiceCustomer);
+            customer = customerService.getCustomerById(choiceCustomer);
             log.info("Найден покупатель с ID: {}", choiceCustomer);
 
             scanner.nextLine();
@@ -80,7 +87,7 @@ public class OrderController {
 
             int choiceProduct = scanner.nextInt();
 
-            product = productRepository.find(choiceProduct);
+            product = productService.getProductById(choiceProduct);
             log.info("Найден товар с ID: {}", choiceProduct);
             scanner.nextLine();
 

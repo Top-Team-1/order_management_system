@@ -87,7 +87,7 @@ public class ProductController {
     private void getProductList() {
         log.info("Получение всех товаров");
         try {
-            String info = productService.getAll().toString();
+            String info = productService.getAllProducts().toString();
             System.out.println(info);
         } catch (ProductFileNotFoundException e) {
             log.warn("Ошибка получения товаров ");
@@ -105,7 +105,7 @@ public class ProductController {
         findID = sc.nextInt();
         sc.nextLine();
         try {
-            String info = productService.getProduct(findID).toString();
+            String info = productService.getProductById(findID).toString();
             System.out.println(info);
         } catch (ProductFileNotFoundException | ProductNotFoundException e) {
             log.warn("Ошибка поиска товара по id ");
