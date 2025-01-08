@@ -15,6 +15,12 @@ public enum Discount {
     public int getDiscount() {
         return discount;
     }
+
+    /**
+     * Метод для получения скидки
+     * @param customerType Тип покупателя
+     * @return Возвращает значение Discount
+     */
     public static Discount getDiscountValue(CustomerType customerType){
         Map<CustomerType, Discount> discountMap = Map.of(
                 CustomerType.VIP, Discount.VIP,

@@ -110,7 +110,7 @@ public class OrderController {
         findID = scanner.nextInt();
         scanner.nextLine();
         try {
-            String info = orderService.getOrder(findID).toString();
+            String info = orderService.getOrderById(findID).toString();
             System.out.println(info);
         } catch (OrderNotFoundException e) {
             log.warn("Ошибка поиска заказа по id ");

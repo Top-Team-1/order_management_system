@@ -58,13 +58,21 @@ public class CustomerService {
                 .orElseThrow(() -> new CustomerNotFoundException("Покупатель с ID " + id + " не найден!"));
     }
 
-
+    /**
+     * Метод возвращает тип покупателя
+     * @param customer Покупатель
+     * @return Покупатель с новым статусом
+     */
     public Customer checkCustomerType(Customer customer) {
         customer.setCountOrder(customer.getCountOrder() + 1);
-        if (customer.getCountOrder() >= 4) {
+        int countForCustomerTypeRegular = 1;
+        int countForCustomerTypeVip = 4;
+        if (customer.getCountOrder() >= countForCustomerTypeVip) {
             customer.setCustomerType(CustomerType.VIP);
-        } else if (customer.getCountOrder() > 1 || customer.getCountOrder() < 4) {
+        } else if (customer.getCountOrder() > countForCustomerTypeRegular || customer.getCountOrder() < countForCustomerTypeVip) {
             customer.setCustomerType(CustomerType.REGULAR);
+        } else {
+            customer.setCustomerType(CustomerType.NEW);
         }
         return customerRepository.save(customer);
     }
