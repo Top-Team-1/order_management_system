@@ -5,6 +5,7 @@ package org.topteam1.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.model.*;
 import org.topteam1.repository.ProductRepository;
 
@@ -39,9 +40,11 @@ public class ProductService {
      *
      * @return список товаров.
      */
-    public List<Product> getAll() {
+    public List<Product> getAllProducts() {
         log.info("Поиск всех товаров");
-        return productRepository.findAll();
+        return productRepository.findAll().stream()
+                .map(Product::new)
+                .toList();
     }
 
     /**
@@ -50,9 +53,12 @@ public class ProductService {
      * @param id id товара
      * @return возвращает товар по id.
      */
-    public Product getProduct(int id) {
+    public Product getProductById(int id) {
         log.info("Идёт поиск товара по id: {}", id);
-        return productRepository.find(id);
+        return getAllProducts().stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     /**
@@ -61,10 +67,6 @@ public class ProductService {
      * @param customer Покупатель
      */
     public void calculateDiscount(Product product, Customer customer) {
-        if (customer.getCustomerType() == CustomerType.VIP){
-            product.setPrice(product.getPrice() - (product.getPrice()) * Discount.VIP.getDiscount() / 100);
-        }else if(customer.getCustomerType() == CustomerType.REGULAR){
-            product.setPrice(product.getPrice() - (product.getPrice()) * Discount.REGULAR.getDiscount() / 100);
-        }
+        product.setPrice(product.getPrice() - (product.getPrice()) * Discount.getDiscountValue(customer.getCustomerType()).getDiscount() / 100);
     }
 }

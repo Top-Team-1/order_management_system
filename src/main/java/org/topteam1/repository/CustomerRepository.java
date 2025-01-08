@@ -81,39 +81,17 @@ public class CustomerRepository {
      *
      * @return возвращает список всех покупателей
      */
-    public List<Customer> findAll() {
+    public List<String> findAll() {
 
         log.info("Получение покупателей из файла: {}", filePath);
 
         try {
-            return Files.readAllLines(filePath)
-                    .stream()
-                    .map(Customer::new)
+            return Files.readAllLines(filePath).stream()
                     .toList();
         } catch (IOException e) {
             log.error("Ошибка получения покупателей из файла ", e);
-            throw new CustomerFileNotFoundException("Файл записи не найден!");
+            System.out.println(e.getMessage());
         }
-    }
-
-    /**
-     * Метод для поиска покупателя по ID
-     *
-     * @param id принимает в себя ID покупателя
-     * @return возвращает покупателя с заданным ID
-     */
-    public Customer find(long id) {
-
-        log.info("Поиск покупателя по id: {}", id);
-
-        try (Stream<String> lines = Files.lines(filePath)) {
-            return lines.map(Customer::new)
-                    .filter(c -> c.getId() == id)
-                    .findFirst()
-                    .orElseThrow(() -> new CustomerNotFoundException("Покупатель с ID " + id + " не найден!"));
-        } catch (IOException e) {
-            log.error("Ошибка получения покупателя из файла: ", e);
-            throw new CustomerFileNotFoundException("Файл записи не найден!");
-        }
+        return List.of();
     }
 }

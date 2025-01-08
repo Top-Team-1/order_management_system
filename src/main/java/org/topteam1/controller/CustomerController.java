@@ -77,7 +77,7 @@ public class CustomerController {
         log.info("Получение всех покупателей");
 
         try {
-            String info = customerService.getCustomer().toString();
+            String info = customerService.getAllCustomers().toString();
             System.out.println(info);
         } catch (CustomerFileNotFoundException e) {
             System.out.println(e.getMessage());
@@ -94,7 +94,7 @@ public class CustomerController {
         findId = sc.nextInt();
         sc.nextLine();
         try {
-            String info = customerService.getCustomerForId(findId).toString();
+            String info = customerService.getCustomerById(findId).toString();
             System.out.println(info);
         } catch (CustomerNotFoundException e) {
             log.warn("Ошибка поиска покупателя по id");

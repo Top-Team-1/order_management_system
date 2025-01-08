@@ -2,6 +2,7 @@ package org.topteam1.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.model.Customer;
 import org.topteam1.model.CustomerType;
 import org.topteam1.repository.CustomerRepository;
@@ -36,9 +37,11 @@ public class CustomerService {
      *
      * @return возвращает список покупателей
      */
-    public List<Customer> getCustomer() {
+    public List<Customer> getAllCustomers() {
         log.info("Поиск всех покупателей");
-        return customerRepository.findAll();
+        return customerRepository.findAll().stream()
+                .map(Customer::new)
+                .toList();
     }
 
     /**
@@ -47,9 +50,12 @@ public class CustomerService {
      * @param id хранит заданный ID
      * @return возвращает покупателя с заданным ID
      */
-    public Customer getCustomerForId(Integer id) {
+    public Customer getCustomerById(long id) {
         log.info("Идет поиск покупателя по id: {}", id);
-        return customerRepository.find(id);
+        return getAllCustomers().stream()
+                .filter(c -> c.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new CustomerNotFoundException("Покупатель с ID " + id + " не найден!"));
     }
 
 
