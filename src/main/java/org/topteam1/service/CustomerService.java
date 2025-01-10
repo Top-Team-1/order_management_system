@@ -60,6 +60,7 @@ public class CustomerService {
 
     /**
      * Метод возвращает тип покупателя
+     *
      * @param customer Покупатель
      * @return Покупатель с новым статусом
      */

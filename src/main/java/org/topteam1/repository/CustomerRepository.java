@@ -90,8 +90,7 @@ public class CustomerRepository {
                     .toList();
         } catch (IOException e) {
             log.error("Ошибка получения покупателей из файла ", e);
-            System.out.println(e.getMessage());
+            throw new CustomerFileNotFoundException("Файл записи не найден!");
         }
-        return List.of();
     }
 }

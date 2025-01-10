@@ -2,6 +2,7 @@ package org.topteam1.repository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.topteam1.Exceptions.OrderFileNotFoundException;
 import org.topteam1.Exceptions.OrderNotFoundException;
 import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
@@ -56,7 +57,7 @@ public class OrderRepository {
                 Files.write(filePathId, id.toString().getBytes());
                 log.info("Заказ с ID {} успешно сохранен: {}", order.getId(), order);
             } else {
-                List<String> updateOrderstatus = orders.stream()
+                List<String> updateOrderStatus = orders.stream()
                         .map(o -> {
                             Order newOrder = new Order(o);
                             if (newOrder.getId().equals(order.getId())) {
@@ -65,7 +66,7 @@ public class OrderRepository {
                             return o;
                         })
                         .toList();
-                Files.write(filePath, updateOrderstatus);
+                Files.write(filePath, updateOrderStatus);
             }
         } catch (IOException e) {
             log.error("Ошибка при сохранении заказа: {}", e.getMessage());
@@ -85,8 +86,7 @@ public class OrderRepository {
             return Files.readAllLines(filePath).stream()
                     .toList();
         } catch (IOException e) {
-            System.out.println(e.getMessage()); // заглушка. поменять
+            throw new OrderFileNotFoundException("Файл записи не найден!");
         }
-        return List.of();
     }
 }
