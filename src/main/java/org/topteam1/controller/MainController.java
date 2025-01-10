@@ -3,6 +3,10 @@
  */
 package org.topteam1.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainController {
@@ -10,6 +14,7 @@ public class MainController {
     private final CustomerController customerController;
     private final OrderController orderController;
     Scanner sc = new Scanner(System.in);
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     public MainController(ProductController productController, CustomerController customerController, OrderController orderController) {
         this.productController = productController;
@@ -21,22 +26,29 @@ public class MainController {
      * Метод для запуска программы.
      */
     public void start() {
+        log.info("Работа с программой началась");
         while (true) {
-            System.out.println(">>>>Главное меню<<<<\n" +
-                    "1) Работа с товаром\n" +
-                    "2) Работа с покупателем\n" +
-                    "3) Работа с заказом\n" +
-                    "0) Выход из программы");
-            int choise = sc.nextInt();
-            sc.nextLine();
-            switch (choise) {
-                case 1 -> productController.start();
-                case 2 -> customerController.start();
-                case 3 -> orderController.start();
-                case 0 -> {
-                    return;
+            try {
+                System.out.println(">>>>Главное меню<<<<\n" +
+                        "1) Работа с товаром\n" +
+                        "2) Работа с покупателем\n" +
+                        "3) Работа с заказом\n" +
+                        "0) Выход из программы");
+                int choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1 -> productController.start();
+                    case 2 -> customerController.start();
+                    case 3 -> orderController.start();
+                    case 0 -> {
+                        return;
+                    }
+                    default -> System.out.println("Неверный выбор, попробуйте ещё раз");
                 }
-                default -> System.out.println("Неверный выбор, попробуйте ещё раз");
+            } catch (InputMismatchException e) {
+                log.error("Некорректный формат данных");
+                System.out.println("Неверный выбор, попробуйте ещё раз");
+                sc.nextLine();
             }
         }
     }

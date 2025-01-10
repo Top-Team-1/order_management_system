@@ -11,6 +11,7 @@ import org.topteam1.Exceptions.ProductNotFoundException;
 import org.topteam1.model.ProductCategory;
 import org.topteam1.service.ProductService;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductController {
@@ -31,25 +32,31 @@ public class ProductController {
     public void start() {
         log.info("Запущена работа с товаром");
         while (true) {
-            int choice;
-            System.out.println("""
-                    >>>>Управление товарами<<<<
-                    1) Добавить товар
-                    2) Посмотреть все доступные товары
-                    3) Найти товар по ID
-                    0) Назад""");
-            choice = sc.nextInt();
-            sc.nextLine();
-            log.info("Пользователь выбрал пункт меню: {}", choice);
-            switch (choice) {
-                case 1 -> addProduct();
-                case 2 -> getProductList();
-                case 3 -> findProduct();
-                case 0 -> {
-                    log.info("Завершение работы с товаром");
-                    return;
+            try {
+                int choice;
+                System.out.println("""
+                        >>>>Управление товарами<<<<
+                        1) Добавить товар
+                        2) Посмотреть все доступные товары
+                        3) Найти товар по ID
+                        0) Назад""");
+                choice = sc.nextInt();
+                sc.nextLine();
+                log.info("Пользователь выбрал пункт меню: {}", choice);
+                switch (choice) {
+                    case 1 -> addProduct();
+                    case 2 -> getProductList();
+                    case 3 -> findProductById();
+                    case 0 -> {
+                        log.info("Завершение работы с товаром");
+                        return;
+                    }
+                    default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
                 }
-                default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
+            } catch (InputMismatchException e) {
+                log.error("Некорректный формат данных");
+                System.out.println("Неверный выбор, попробуйте ещё раз");
+                sc.nextLine();
             }
         }
     }
@@ -98,7 +105,7 @@ public class ProductController {
     /**
      * Метод для поиска нужного товара по ID.
      */
-    private void findProduct() {
+    private void findProductById() {
         int findID;
         log.info("Поиск товара по id");
         System.out.println("Введите ID товара для поиска");

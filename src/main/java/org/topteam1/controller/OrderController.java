@@ -2,10 +2,7 @@ package org.topteam1.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.topteam1.Exceptions.CustomerNotFoundException;
-import org.topteam1.Exceptions.OrderNotAddException;
-import org.topteam1.Exceptions.OrderNotFoundException;
-import org.topteam1.Exceptions.ProductNotFoundException;
+import org.topteam1.Exceptions.*;
 import org.topteam1.model.Customer;
 import org.topteam1.model.OrderStatus;
 import org.topteam1.model.Product;
@@ -15,6 +12,7 @@ import org.topteam1.service.CustomerService;
 import org.topteam1.service.OrderService;
 import org.topteam1.service.ProductService;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class OrderController {
@@ -22,7 +20,7 @@ public class OrderController {
     private Customer customer;
     private Product product;
     private final OrderService orderService;
-    Scanner scanner = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     private final ProductService productService;
@@ -43,26 +41,32 @@ public class OrderController {
     public void start() {
         log.info("Запущена работа с заказом");
         while (true) {
-            System.out.println("""
-                    >>>>Управление заказами<<<<
-                    1) Создать заказ
-                    2) Показать заказ по ID
-                    3) Показать все заказы
-                    4) Изменить статус заказа
-                    0) Назад""");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            log.info("Пользователь выбрал пункт меню: {}", choice);
-            switch (choice) {
-                case 1 -> createOrder();
-                case 2 -> showOrder();
-                case 3 -> showAllOrders();
-                case 4 -> changeOrderStatus();
-                case 0 -> {
-                    log.info("Завершение работы с товаром");
-                    return;
+            try {
+                System.out.println("""
+                        >>>>Управление заказами<<<<
+                        1) Создать заказ
+                        2) Показать заказ по ID
+                        3) Показать все заказы
+                        4) Изменить статус заказа
+                        0) Назад""");
+                int choice = sc.nextInt();
+                sc.nextLine();
+                log.info("Пользователь выбрал пункт меню: {}", choice);
+                switch (choice) {
+                    case 1 -> addOrder();
+                    case 2 -> findOrderById();
+                    case 3 -> getOrderList();
+                    case 4 -> changeOrderStatus();
+                    case 0 -> {
+                        log.info("Завершение работы с товаром");
+                        return;
+                    }
+                    default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
                 }
-                default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
+            } catch (InputMismatchException e) {
+                log.error("Некорректный формат данных");
+                System.out.println("Неверный выбор, попробуйте ещё раз");
+                sc.nextLine();
             }
         }
     }
@@ -70,26 +74,26 @@ public class OrderController {
     /**
      * Метод создания заказа, с выбором покупателя и товара
      */
-    public void createOrder() {
+    public void addOrder() {
         log.info("Создание заказа");
         System.out.println("Выберите покупателя");
         System.out.println(customerRepository.findAll());
 
-        int choiceCustomer = scanner.nextInt();
+        int choiceCustomer = sc.nextInt();
         try {
             customer = customerService.getCustomerById(choiceCustomer);
             log.info("Найден покупатель с ID: {}", choiceCustomer);
 
-            scanner.nextLine();
+            sc.nextLine();
 
             System.out.println("Выберите товар");
             System.out.println(productRepository.findAll());
 
-            int choiceProduct = scanner.nextInt();
+            int choiceProduct = sc.nextInt();
 
             product = productService.getProductById(choiceProduct);
             log.info("Найден товар с ID: {}", choiceProduct);
-            scanner.nextLine();
+            sc.nextLine();
 
             String info = orderService.addOrder(customer, product).toString();
             log.info("Заказ успешно создан: {}", info);
@@ -103,16 +107,16 @@ public class OrderController {
     /**
      * Метод выводит информацию заказа по ID
      */
-    public void showOrder() {
+    public void findOrderById() {
         int findID;
         log.info("Поиск заказа по id");
         System.out.println("Введите ID товара для поиска");
-        findID = scanner.nextInt();
-        scanner.nextLine();
+        findID = sc.nextInt();
+        sc.nextLine();
         try {
             String info = orderService.getOrderById(findID).toString();
             System.out.println(info);
-        } catch (OrderNotFoundException e) {
+        } catch (OrderFileNotFoundException | OrderNotFoundException e) {
             log.warn("Ошибка поиска заказа по id ");
             System.out.println(e.getMessage());
         }
@@ -121,12 +125,12 @@ public class OrderController {
     /**
      * Метод выводит информацию о заказах
      */
-    public void showAllOrders() {
+    public void getOrderList() {
         log.info("Получение всех заказов");
         try {
             String info = orderService.getAllOrders().toString();
             System.out.println(info);
-        } catch (OrderNotFoundException e) {
+        } catch (OrderFileNotFoundException e) {
             log.warn("Ошибка получения заказов ");
             System.out.println(e.getMessage());
         }
@@ -140,16 +144,16 @@ public class OrderController {
         try {
             System.out.println("Выберите id заказа: ");
 
-            int idOrder = scanner.nextInt();
-            scanner.nextLine();
+            int idOrder = sc.nextInt();
+            sc.nextLine();
 
             System.out.println("Выберите статус заказа:\n" +
                     "1)" + OrderStatus.PROCESSING.getRus() + "\n" +
                     "2)" + OrderStatus.COMPLETED.getRus() + "\n" +
                     "3)" + OrderStatus.CANCELED.getRus());
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = sc.nextInt();
+            sc.nextLine();
 
             String info = orderService.updateOrderStatus(idOrder, choice).toString();
             log.info("Статус заказа изменён: {}", info);

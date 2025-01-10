@@ -7,6 +7,7 @@ import org.topteam1.Exceptions.CustomerNotAddException;
 import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.service.CustomerService;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CustomerController {
@@ -27,25 +28,31 @@ public class CustomerController {
     public void start() {
         log.info("Запущена работа с покупателем");
         while (true) {
-            int choice;
-            System.out.println("""
-                    >>>>Управление покупателями<<<<
-                    1) Добавить покупателя\s
-                    2) Посмотреть всех покупателей\s
-                    3) Найти покупателя по ID
-                    0) Назад""");
-            choice = sc.nextInt();
-            sc.nextLine();
-            log.info("Пользователь выбрал пункт меню: {}", choice);
-            switch (choice) {
-                case 1 -> addCustomer();
-                case 2 -> getCustomerList();
-                case 3 -> findCustomerId();
-                case 0 -> {
-                    log.info("Завершение работы с покупателем");
-                    return;
+            try {
+                int choice;
+                System.out.println("""
+                        >>>>Управление покупателями<<<<
+                        1) Добавить покупателя\s
+                        2) Посмотреть всех покупателей\s
+                        3) Найти покупателя по ID
+                        0) Назад""");
+                choice = sc.nextInt();
+                sc.nextLine();
+                log.info("Пользователь выбрал пункт меню: {}", choice);
+                switch (choice) {
+                    case 1 -> addCustomer();
+                    case 2 -> getCustomerList();
+                    case 3 -> findCustomerById();
+                    case 0 -> {
+                        log.info("Завершение работы с покупателем");
+                        return;
+                    }
+                    default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
                 }
-                default -> System.out.println("Неизвестная команда, попробуйте ещё раз");
+            } catch (InputMismatchException e) {
+                log.error("Некорректный формат данных");
+                System.out.println("Неверный выбор, попробуйте ещё раз");
+                sc.nextLine();
             }
         }
     }
@@ -87,7 +94,7 @@ public class CustomerController {
     /**
      * Метод выполняет поиск покупателя по ID
      */
-    private void findCustomerId() {
+    private void findCustomerById() {
         int findId;
         log.info("Поиск покупателя по id");
         System.out.println("Введите ID покупателя для поиска");

@@ -77,9 +77,7 @@ public class ProductRepository {
                     .toList();
         } catch (IOException e) {
             log.error("Ошибка получения товаров из файла: ", e);
-            System.out.println(e.getMessage());
+            throw new ProductFileNotFoundException("Файл записи не найден!");
         }
-        return List.of();
     }
-
 }

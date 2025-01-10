@@ -63,7 +63,8 @@ public class ProductService {
 
     /**
      * Метод для расчёта скидки покупателя, в зависимости от его статуса.
-     * @param product Товар
+     *
+     * @param product  Товар
      * @param customer Покупатель
      */
     public void calculateDiscount(Product product, Customer customer) {
