@@ -66,19 +66,36 @@ public class ProductController {
      */
     private void addProduct() {
         log.info("Добавление продукта");
+
+        String productName;
+        do {
+            System.out.print("Введите название товара - ");
+            productName = sc.nextLine();
+            if (productName == null || productName.isBlank()) {
+                log.warn("Некорректный формат для имени товара{}", productName);
+                System.out.println("Название не может быть пустым");
+            }
+        } while (productName == null || productName.isBlank());
+
+        int productPrice;
+        do {
+            System.out.print("Введите цену товара - ");
+            productPrice = sc.nextInt();
+            sc.nextLine();
+            if (productPrice <= 0) {
+                log.warn("Цена отрицательное число - {}", productPrice);
+                System.out.println("Цена не может быть отрицательной");
+            }
+        } while (productPrice <= 0);
+
         int categoryNumber;
-        System.out.print("Введите название товара - ");
-        String productName = sc.nextLine();
-        System.out.print("Введите цену товара - ");
-        Integer productPrice = sc.nextInt();
-        sc.nextLine();
         System.out.println("Выберете категорию товара\n" +
                 "1)" + ProductCategory.SMARTPHONE.getRus() + "\n" +
                 "2)" + ProductCategory.TV.getRus() + "\n" +
                 "3)" + ProductCategory.HOUSEHOLD_APPLIANCES.getRus());
         categoryNumber = sc.nextInt();
+
         try {
-//            String productCategory = String.valueOf(ProductCategory.getProductByNumber(categoryNumber).getRus());
             log.info("Пользователь ввёл: name={}, price={}, category={}", productName, productPrice, ProductCategory.getProductByNumber(categoryNumber));
             String info = productService.addProduct(productName, productPrice, ProductCategory.getProductByNumber(categoryNumber)).toString();
             System.out.println(info);

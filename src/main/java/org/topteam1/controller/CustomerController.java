@@ -61,11 +61,18 @@ public class CustomerController {
      * Метод для работы с покупателем и добавлением его в список
      */
     private void addCustomer() {
-
         log.info("Добавление покупателя");
+        String customerName;
+        do {
+            System.out.println("Введите Ваше имя: ");
+            customerName = sc.nextLine();
+            if (!customerName.matches("^[А-Яа-яЁё]+$")) {
+                log.warn("Имя покупателя содержит символы, цифры или буквы иного алфавита, или пустое{}", customerName);
+                System.out.println("Имя должно состоять только из букв русского алфавита");
+                customerName = null;
+            }
+        } while (customerName == null);
 
-        System.out.println("Введите Ваше имя: ");
-        String customerName = sc.nextLine();
         try {
             String info = customerService.addCustomer(customerName).toString();
             log.info("Пользователь ввел: name={}", customerName);
