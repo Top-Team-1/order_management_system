@@ -18,18 +18,12 @@ public class OrderService {
     private final CustomerService customerService;
     private final ProductService productService;
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
-    private final ProductRepository productRepository;
-
 
     public OrderService(CustomerService customerService, ProductService productService,
-                        OrderRepository orderRepository, CustomerRepository customerRepository,
-                        ProductRepository productRepository) {
+                        OrderRepository orderRepository) {
         this.customerService = customerService;
         this.productService = productService;
         this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
-        this.productRepository = productRepository;
     }
 
     /**
