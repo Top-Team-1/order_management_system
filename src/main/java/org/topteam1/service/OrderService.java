@@ -7,10 +7,7 @@ import org.topteam1.model.Customer;
 import org.topteam1.model.Order;
 import org.topteam1.model.OrderStatus;
 import org.topteam1.model.Product;
-import org.topteam1.repository.CustomerRepository;
 import org.topteam1.repository.OrderRepository;
-import org.topteam1.repository.ProductRepository;
-
 import java.util.List;
 
 public class OrderService {

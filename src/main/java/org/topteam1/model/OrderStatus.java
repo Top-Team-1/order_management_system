@@ -11,7 +11,7 @@ public enum OrderStatus {
     CANCELED("Заказ отменён");
     final private String rus;
 
-    private OrderStatus(String rus) {
+    OrderStatus(String rus) {
         this.rus = rus;
     }
 

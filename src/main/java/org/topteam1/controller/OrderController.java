@@ -6,8 +6,6 @@ import org.topteam1.Exceptions.*;
 import org.topteam1.model.Customer;
 import org.topteam1.model.OrderStatus;
 import org.topteam1.model.Product;
-import org.topteam1.repository.CustomerRepository;
-import org.topteam1.repository.ProductRepository;
 import org.topteam1.service.CustomerService;
 import org.topteam1.service.OrderService;
 import org.topteam1.service.ProductService;
@@ -17,20 +15,13 @@ import java.util.Scanner;
 
 public class OrderController {
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
-    private Customer customer;
-    private Product product;
-    private final OrderService orderService;
     Scanner sc = new Scanner(System.in);
-    private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
+    private final OrderService orderService;
     private final ProductService productService;
     private final CustomerService customerService;
 
-    public OrderController(OrderService orderService, ProductService productService, CustomerService customerService,
-                           ProductRepository productRepository, CustomerRepository customerRepository) {
+    public OrderController(OrderService orderService, ProductService productService, CustomerService customerService) {
         this.orderService = orderService;
-        this.productRepository = productRepository;
-        this.customerRepository = customerRepository;
         this.productService = productService;
         this.customerService = customerService;
     }
@@ -77,21 +68,21 @@ public class OrderController {
     public void addOrder() {
         log.info("Создание заказа");
         System.out.println("Выберите покупателя");
-        System.out.println(customerRepository.findAll());
+        System.out.println(customerService.getAllCustomers());
 
         int choiceCustomer = sc.nextInt();
         try {
-            customer = customerService.getCustomerById(choiceCustomer);
+            Customer customer = customerService.getCustomerById(choiceCustomer);
             log.info("Найден покупатель с ID: {}", choiceCustomer);
 
             sc.nextLine();
 
             System.out.println("Выберите товар");
-            System.out.println(productRepository.findAll());
+            System.out.println(productService.getAllProducts());
 
             int choiceProduct = sc.nextInt();
 
-            product = productService.getProductById(choiceProduct);
+            Product product = productService.getProductById(choiceProduct);
             log.info("Найден товар с ID: {}", choiceProduct);
             sc.nextLine();
 
