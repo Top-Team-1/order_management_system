@@ -11,11 +11,10 @@ import org.topteam1.model.Product;
 import org.topteam1.repository.CustomerRepository;
 import org.topteam1.repository.OrderRepository;
 import org.topteam1.repository.ProductRepository;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -99,10 +98,9 @@ class OrderServiceTest {
         Customer customer2 = customerService.getCustomerById(2);
         Product product1 = productService.getProductById(1);
         Product product2 = productService.getProductById(2);
+        //when
         Order order1 = orderService.addOrder(customer1, product1);
         Order order2 = orderService.addOrder(customer2, product2);
-        //when
-        List<Order> orders = orderService.getAllOrders();
         //then
         assertEquals(productService.getProductById(1).getName(), order1.getProduct().getName());
         assertEquals(productService.getProductById(2).getName(), order2.getProduct().getName());

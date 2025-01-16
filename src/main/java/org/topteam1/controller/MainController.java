@@ -5,7 +5,6 @@ package org.topteam1.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -29,11 +28,12 @@ public class MainController {
         log.info("Работа с программой началась");
         while (true) {
             try {
-                System.out.println(">>>>Главное меню<<<<\n" +
-                        "1) Работа с товаром\n" +
-                        "2) Работа с покупателем\n" +
-                        "3) Работа с заказом\n" +
-                        "0) Выход из программы");
+                System.out.println("""
+                        >>>>Главное меню<<<<
+                        1) Работа с товаром
+                        2) Работа с покупателем
+                        3) Работа с заказом
+                        0) Выход из программы""");
                 int choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {

@@ -3,15 +3,13 @@ package org.topteam1.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.topteam1.Exceptions.CustomerFileNotFoundException;
-import org.topteam1.Exceptions.CustomerNotFoundException;
 import org.topteam1.model.Customer;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import java.util.stream.Stream;
+
 
 public class CustomerRepository {
     private static final Logger log = LoggerFactory.getLogger(CustomerRepository.class);
