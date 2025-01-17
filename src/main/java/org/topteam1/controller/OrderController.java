@@ -9,9 +9,9 @@ import org.topteam1.model.Product;
 import org.topteam1.service.CustomerService;
 import org.topteam1.service.OrderService;
 import org.topteam1.service.ProductService;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class OrderController {
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
@@ -68,7 +68,7 @@ public class OrderController {
     public void addOrder() {
         log.info("Создание заказа");
         System.out.println("Выберите покупателя");
-        System.out.println(customerService.getAllCustomers());
+        customerService.getAllCustomers().forEach(System.out::println);
 
         int choiceCustomer = sc.nextInt();
         try {
@@ -78,7 +78,7 @@ public class OrderController {
             sc.nextLine();
 
             System.out.println("Выберите товар");
-            System.out.println(productService.getAllProducts());
+            productService.getAllProducts().forEach(System.out::println);
 
             int choiceProduct = sc.nextInt();
 
@@ -119,8 +119,7 @@ public class OrderController {
     public void getOrderList() {
         log.info("Получение всех заказов");
         try {
-            String info = orderService.getAllOrders().toString();
-            System.out.println(info);
+            orderService.getAllOrders().forEach(System.out::println);
         } catch (OrderFileNotFoundException e) {
             log.warn("Ошибка получения заказов ");
             System.out.println(e.getMessage());
@@ -133,7 +132,10 @@ public class OrderController {
     public void changeOrderStatus() {
         log.info("Начато изменение статуса заказа");
         try {
-            System.out.println("Выберите id заказа: ");
+            System.out.println("Выберите id заказа из доступных: ");
+            System.out.println(orderService.getAllOrders().stream()
+                    .map(o -> String.valueOf(o.getId()))
+                    .collect(Collectors.joining(", ")));
 
             int idOrder = sc.nextInt();
             sc.nextLine();
@@ -149,7 +151,7 @@ public class OrderController {
             String info = orderService.updateOrderStatus(idOrder, choice).toString();
             log.info("Статус заказа изменён: {}", info);
             System.out.println(info);
-        } catch (OrderNotFoundException e) {
+        } catch (IllegalArgumentException |OrderNotFoundException e) {
             log.warn("Заказ с ID {} не найден для обновления статуса", e.getMessage());
             System.out.println(e.getMessage());
         }

@@ -33,14 +33,13 @@ public class ProductController {
         log.info("Запущена работа с товаром");
         while (true) {
             try {
-                int choice;
                 System.out.println("""
                         >>>>Управление товарами<<<<
                         1) Добавить товар
                         2) Посмотреть все доступные товары
                         3) Найти товар по ID
                         0) Назад""");
-                choice = sc.nextInt();
+                int choice = sc.nextInt();
                 sc.nextLine();
                 log.info("Пользователь выбрал пункт меню: {}", choice);
                 switch (choice) {
@@ -111,8 +110,7 @@ public class ProductController {
     private void getProductList() {
         log.info("Получение всех товаров");
         try {
-            String info = productService.getAllProducts().toString();
-            System.out.println(info);
+            productService.getAllProducts().forEach(System.out::println);
         } catch (ProductFileNotFoundException e) {
             log.warn("Ошибка получения товаров ");
             System.out.println(e.getMessage());
@@ -123,10 +121,9 @@ public class ProductController {
      * Метод для поиска нужного товара по ID.
      */
     private void findProductById() {
-        int findID;
         log.info("Поиск товара по id");
         System.out.println("Введите ID товара для поиска");
-        findID = sc.nextInt();
+        int findID = sc.nextInt();
         sc.nextLine();
         try {
             String info = productService.getProductById(findID).toString();

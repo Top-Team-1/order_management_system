@@ -27,6 +27,7 @@ public class ProductRepository {
         this.filePath = Path.of(file);
         this.filePathId = Path.of(file + "_id");
         id = 0L;
+
         try {
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);

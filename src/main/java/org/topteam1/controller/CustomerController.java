@@ -29,15 +29,15 @@ public class CustomerController {
         log.info("Запущена работа с покупателем");
         while (true) {
             try {
-                int choice;
                 System.out.println("""
                         >>>>Управление покупателями<<<<
                         1) Добавить покупателя\s
                         2) Посмотреть всех покупателей\s
                         3) Найти покупателя по ID
                         0) Назад""");
-                choice = sc.nextInt();
+                int choice = sc.nextInt();
                 sc.nextLine();
+
                 log.info("Пользователь выбрал пункт меню: {}", choice);
                 switch (choice) {
                     case 1 -> addCustomer();
@@ -91,8 +91,7 @@ public class CustomerController {
         log.info("Получение всех покупателей");
 
         try {
-            String info = customerService.getAllCustomers().toString();
-            System.out.println(info);
+            customerService.getAllCustomers().forEach(System.out::println);
         } catch (CustomerFileNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -102,10 +101,9 @@ public class CustomerController {
      * Метод выполняет поиск покупателя по ID
      */
     private void findCustomerById() {
-        int findId;
         log.info("Поиск покупателя по id");
         System.out.println("Введите ID покупателя для поиска");
-        findId = sc.nextInt();
+        int findId = sc.nextInt();
         sc.nextLine();
         try {
             String info = customerService.getCustomerById(findId).toString();
