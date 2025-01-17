@@ -68,6 +68,7 @@ public class CustomerService {
         customer.setCountOrder(customer.getCountOrder() + 1);
         int countForCustomerTypeRegular = 1;
         int countForCustomerTypeVip = 4;
+
         if (customer.getCountOrder() >= countForCustomerTypeVip) {
             customer.setCustomerType(CustomerType.VIP);
         } else if (customer.getCountOrder() > countForCustomerTypeRegular || customer.getCountOrder() < countForCustomerTypeVip) {

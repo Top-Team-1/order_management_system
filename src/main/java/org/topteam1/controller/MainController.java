@@ -5,6 +5,7 @@ package org.topteam1.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -34,6 +35,7 @@ public class MainController {
                         2) Работа с покупателем
                         3) Работа с заказом
                         0) Выход из программы""");
+
                 int choice = sc.nextInt();
                 sc.nextLine();
                 switch (choice) {
