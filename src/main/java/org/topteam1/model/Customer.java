@@ -65,7 +65,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return  id + "," + name + "," + customerType.getRus() + "," + countOrder;
+        return id + "," + name + "," + customerType.getRus() + "," + countOrder;
     }
 
     public Customer(String customerFromFile) {

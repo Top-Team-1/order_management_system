@@ -9,6 +9,7 @@ import org.topteam1.model.Product;
 import org.topteam1.service.CustomerService;
 import org.topteam1.service.OrderService;
 import org.topteam1.service.ProductService;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -132,8 +133,9 @@ public class OrderController {
     public void changeOrderStatus() {
         log.info("Начато изменение статуса заказа");
         try {
-            System.out.println("Выберите id заказа из доступных: ");
+            System.out.println("Выберите id заказа из доступных для изменения: ");
             System.out.println(orderService.getAllOrders().stream()
+                    .filter(o -> o.getOrderStatus() != OrderStatus.CANCELED && o.getOrderStatus() != OrderStatus.COMPLETED)
                     .map(o -> String.valueOf(o.getId()))
                     .collect(Collectors.joining(", ")));
 
@@ -151,7 +153,7 @@ public class OrderController {
             String info = orderService.updateOrderStatus(idOrder, choice).toString();
             log.info("Статус заказа изменён: {}", info);
             System.out.println(info);
-        } catch (IllegalArgumentException |OrderNotFoundException e) {
+        } catch (IllegalArgumentException | OrderNotFoundException e) {
             log.warn("Заказ с ID {} не найден для обновления статуса", e.getMessage());
             System.out.println(e.getMessage());
         }
