@@ -66,7 +66,7 @@ productService.addProduct("iPhone", 129999, productCategory);
 Добавление покупателя:
 ```java
 CustomerService customerService = new CustomerService(customerRepository);
-customerService.addCustomer("Иван Иванов");
+customerService.addCustomer("Иван");
 ```
 
 Создание заказа:
